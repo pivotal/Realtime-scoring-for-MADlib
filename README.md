@@ -11,3 +11,7 @@ RTS-For-MADlib enables the deployment of a AI/ML model as a workflow with compon
 - An optional cache component for feature lookup
 - An orchestrator component.
 
+
+# License
+
+https://opensource.org/licenses/MIT
