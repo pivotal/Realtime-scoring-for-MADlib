@@ -1,0 +1,110 @@
+logging:
+  file: MLModelService.log
+  level:
+    org.springframework: ERROR
+    io.pivotal: DEBUG 
+    
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+          
+  
+spring:
+  application:
+    name:  Madlib Model client Application
+  
+  jpa:
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+    
+server:
+    port: 8085
+
+modeldb-datasource:
+  jdbc-url: 
+  username: 
+  password: 
+  driverClassName: org.postgresql.Driver
+
+containerdb-datasource:
+  jdbc-url: jdbc:postgresql://127.0.0.1:5432/madlibdb?stringtype=unspecified
+  username: madlibuser
+  password: justworks!
+  driverClassName: org.postgresql.Driver
+  leak-detection-threshold: 3000
+#  max-lifetime: 40000
+  
+---
+madlibrest:
+  modelname:
+  modeldescription: 
+  modelschema: 
+  modeltables:
+     - 
+  modelinputtable: 
+  modelquery: 
+  resultstable: 
+  resultsquery: 
+  postgreshome: /usr/lib/postgresql/9.6/bin
+  workdir: /opt/pivotal/rts-for-madlib
+
+
+
+
+
+#app:
+#  modelname: patients_data_logregr
+#  modeldescription: "Patient Data Logistic Regression"
+#  modelschema: madlib_demo
+#  modeltables:
+#     - patients_logregr
+#  actortablename: patients
+#  actionquery: "SELECT madlib.logregr_predict(coef, ARRAY[1, treatment, trait_anxiety]) , madlib.logregr_predict_prob(coef, ARRAY[1, treatment, trait_anxiety]) FROM madlib_demo.patients p, madlib_demo.patients_logregr"
+#  resultstable: 
+#  resultsquery: 
+#  postgreshome: /usr/local/opt/postgresql@9.6/bin
+#  workdir: .
+
+# app:
+#  modelname: patients_data_logregr  
+#   modeldescription: "Golf Data Random forest prediction"
+#   modelschema: "madlib_demo"
+#   modeltables:
+#     - rf_train_output
+#     - rf_train_output_group
+#     - rf_train_output_summary
+#   actortablename: "rf_golf"
+#   actionquery: "SELECT madlib.forest_predict('madlib_demo.rf_train_output', 'madlib_demo.rf_golf', 'madlib_demo.rf_prediction_results', 'prob')"
+#   resultstable: rf_prediction_results
+#   resultsquery: "SELECT g.id, class, \"estimated_prob_Don't Play\", \"estimated_prob_Play\" FROM madlib_demo.rf_prediction_results p, madlib_demo.rf_golf g WHERE p.id = g.id ORDER BY g.id"
+#   postgreshome: /usr/local/opt/postgresql@9.6/bin
+#   workdir: .
+
+
+
+#app:
+#  modelname: patients_data_logregr   
+#  modeldescription": "Credit Application Random Forest model."
+#  modelschema": "credit"
+#  modeltablename: "rf_model"
+#  actortablename: "model_inputs"
+#  actionquery: "SELECT madlib.forest_predict('credit.rf_model','credit.model_inputs','credit.scored_results','prob')"
+#  resultstable: "scored_results"
+#  resultsquery: "SELECT estimated_prob_1, estimated_prob_0 FROM credit.scored_results;"
+
+
+
+  
+ 
+  #/usr/lib/postgresql/9.6/bin
+  #/usr/local/opt/postgresql@9.6/bin
+  #/usr/local/bin
+  #/opt/pivotal/madlibflow
+  
+  
+  

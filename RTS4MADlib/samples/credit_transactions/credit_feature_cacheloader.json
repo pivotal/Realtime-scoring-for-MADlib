@@ -1,0 +1,26 @@
+{
+	"spring.profiles.active": "redis",
+	"redis": {
+		"clustertype": "standlone",
+		"hostname": "{REDIS_HOST}",
+		"port": 6379
+	},
+	"modeldb-datasource": {
+		"jdbc-url": "jdbc:postgresql://{DATABASE}:{PORT}/{DATABASE}",
+		"username": "{USER}",
+		"password": "{PASSWORD}"
+	},
+	"feature-cache": {
+		"featurename": "CreditTransactionFeaturesCache",
+		"featuresourceschema": "credit_trans",
+		"featurefunctions": [
+			"mf_accounts",
+			"mf_merchants"
+		],
+     	"featuresourcetables": {
+			"mf_accounts": "account_id",
+			"mf_merchants": "location_id"
+		}
+	}
+}
+

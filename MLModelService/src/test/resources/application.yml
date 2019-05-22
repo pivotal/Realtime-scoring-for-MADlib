@@ -1,0 +1,57 @@
+logging:
+  file: MADlibRESTService.log
+  level:
+    org.springframework: DEBUG
+    io.pivotal: DEBUG 
+    
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+          
+  
+spring:
+  application:
+    name:  Madlib Model client Application
+  
+  jpa:
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+    
+server:
+    port: 8085
+
+greenplum-datasource:
+  jdbc-url: jdbc:h2:mem:db1;MODE=PostgreSQL;DB_CLOSE_DELAY=-1
+  username: sa
+  password: sa
+  driverClassName: org.h2.Driver
+
+postgres-datasource:
+  jdbc-url: jdbc:h2:mem:db2;MODE=PostgreSQL;DB_CLOSE_DELAY=-1
+  username: sa
+  password: sa
+  driverClassName: org.h2.Driver
+  
+---
+app:
+  modeldescription: "Patient Data Logistic Regression"
+  modelschema: madlib_demo
+  modeltablename: patients_logregr
+  actortablename: patients
+  actionquery: "SELECT madlib.logregr_predict(coef, ARRAY[1, treatment, trait_anxiety]) , madlib.logregr_predict_prob(coef, ARRAY[1, treatment, trait_anxiety]) FROM madlib_demo.patients p, madlib_demo.patients_logregr"
+  postgreshome: /usr/lib/postgresql/9.6/bin
+  workdir: .
+
+  
+  #/usr/local/bin
+  #/usr/lib/postgresql/9.6/bin
+  
+  #/opt/pivotal/madlibclient
+  
+  
+  

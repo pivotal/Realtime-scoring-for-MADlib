@@ -1,0 +1,17 @@
+{
+		"modeldb-datasource.jdbc-url": "jdbc:postgresql://{DB_HOST}:{PORT}/{DATABASE}",
+		"modeldb-datasource.userName": "{DB_LOGIN}",
+		"modeldb-datasource.password": "{DB_PWD}",
+		"madlibrest.modelname": "Credit_fraud_randomforest_model",
+		"madlibrest.modeldescription": "Random Forest Classification Example credit transactions",
+		"madlibrest.modelschema": "credit_trans",
+		"madlibrest.modeltables": [
+			"rf_model",
+			"rf_model_group",
+			"rf_model_summary"
+		],
+		"madlibrest.modelinputtable": "feature_engine_test",
+		"madlibrest.modelquery": "SELECT madlib.forest_predict('credit_trans.rf_model', 'credit_trans.feature_engine_test', 'credit_trans.model_test_scored', 'prob')",
+		"madlibrest.resultstable": "model_test_scored",
+		"madlibrest.resultsquery": "SELECT * from  credit_trans.model_test_scored, credit_trans.feature_engine_test"
+	}

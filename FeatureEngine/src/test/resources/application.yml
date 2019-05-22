@@ -1,0 +1,65 @@
+logging:
+  level:
+    org.springframework: DEBUG
+    io.pivotal: DEBUG 
+    
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    
+server:
+      port: 8086          
+  
+spring:
+  application:
+    name:  Madlib Features engine Application
+  
+  jpa:
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+
+  datasource:
+    jdbc-url: jdbc:h2:mem:db2;MODE=PostgreSQL;DB_CLOSE_DELAY=-1
+    username: sa
+    password: sa
+    driverClassName: org.h2.Driver
+  
+  profiles:
+    active:
+    - test
+
+---
+ 
+pcc:
+  locators: 1
+  port: 1
+  username: 
+  password: 
+
+---
+gemfire:
+  locator: 
+  port: 1
+  username: 
+  password:       
+  server:
+---
+app:
+  featurename: CreditTransactionFeatures
+  featuredescription: Credit Transaction Features
+  featuresschema: madlib_demo
+  payloadtable: message
+  featurequery: SELECT message.*, merchant_features.merchant_name, account_features.* ,log(message.transaction_amount + 1) AS log_transaction_amt FROM madlib_demo.message message JOIN madlib_demo.merchant_features  merchant_features ON  message.merchant_id=merchant_features.merchant_id JOIN madlib_demo.account_features account_features ON  message.account_number=account_features.account_number"
+  cacheenabled: true
+  cacheentities:  
+    account_features: account_number,
+    merchant_features: merchant_id  
+     
+  
+  
+  

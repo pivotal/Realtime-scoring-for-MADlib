@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2019 Sridhar Paladugu
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy of this 
+ software and associated documentation files (the "Software"), to deal in the Software 
+ without restriction, including without limitation the rights to use, copy, modify, 
+ merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
+ permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in all copies 
+ or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR 
+ OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
+ OTHER DEALINGS IN THE SOFTWARE.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gfe="http://www.springframework.org/schema/gemfire"
+	xmlns:gfe-data="http://www.springframework.org/schema/data/gemfire"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/gemfire http://www.springframework.org/schema/gemfire/spring-gemfire.xsd
+  http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+  http://www.springframework.org/schema/data/gemfire http://www.springframework.org/schema/data/gemfire/spring-data-gemfire.xsd
+  http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+	<bean id="pdxSerializer" class="org.apache.geode.pdx.ReflectionBasedAutoSerializer">
+		<constructor-arg value=".*" />
+	</bean>
+
+	<gfe:client-cache id="gemfireCache" pool-name="gemfirePool"
+		pdx-serializer-ref="pdxSerializer" />
+
+	<gfe:pool id="gemfirePool" subscription-enabled="true">
+		<!-- <gfe:server host="${gemfire.server}" port="${gemfire.port}"/> -->
+		<gfe:locator host="${gemfire.locator}" port="${gemfire.port}" /> 
+	</gfe:pool>
+
+	<gfe:client-region id="madlib_features" pool-name="gemfirePool" />
+	
+	<gfe-data:repositories base-package="io.pivotal.rtsmadlib.client.features.cache.repo" />
+
+
+	<bean id="cacheManager"
+		class="org.springframework.data.gemfire.cache.GemfireCacheManager"
+		p:cache-ref="gemfireCache" />
+
+</beans>

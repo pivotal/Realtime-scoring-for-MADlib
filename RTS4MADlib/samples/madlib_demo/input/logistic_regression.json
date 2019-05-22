@@ -1,0 +1,26 @@
+#-------------------------------------------------------------------------------
+# Copyright 2019 Pivotal Software Inc
+# 
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not
+# use this file except in compliance with the License.  You may obtain a copy
+# of the License at
+# 
+#   http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
+# License for the specific language governing permissions and limitations under
+# the License.
+#-------------------------------------------------------------------------------
+{
+  "modeldb-datasource.jdbc-url": "jdbc:postgresql://{HOST}:{PORT}/{DATABASE}",
+  "modeldb-datasource.userName": "{USER}",
+  "modeldb-datasource.password": "{PASSWORD}",
+  "madlibrest.modelname": "patients_data_Logistic_Regression",
+  "madlibrest.modeldescription": "Logistic Regression model predicting the patiens health.",
+  "madlibrest.modelschema": "madlib_demo",
+  "madlibrest.modeltables": ["patients_logregr"],
+  "madlibrest.modelinputtable": "patients",
+  "madlibrest.modelquery": "SELECT madlib.logregr_predict(coef, ARRAY[1, treatment, trait_anxiety]) , madlib.logregr_predict_prob(coef, ARRAY[1, treatment, trait_anxiety]) FROM madlib_demo.patients p, madlib_demo.patients_logregr"
+}

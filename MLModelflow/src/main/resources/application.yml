@@ -1,0 +1,22 @@
+logging:
+  level:
+    org.springframework: ERROR
+    io.pivotal: INFO
+     
+management:
+    endpoints:
+    web:
+      exposure:
+        include: "*"
+    
+server:
+      port: 8089          
+  
+spring:
+  application:
+    name:  MadlibFlow Application
+  
+---
+app:
+  feature-engine-endpoint: 
+  model-endpoint:  

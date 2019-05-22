@@ -1,0 +1,207 @@
+#!/usr/bin/env python
+
+#-----------------------------------------------------------------------------------------------
+# Copyright 2019 Sridhar Paladugu
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy of this 
+# software and associated documentation files (the "Software"), to deal in the Software 
+# without restriction, including without limitation the rights to use, copy, modify, 
+# merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
+# permit persons to whom the Software is furnished to do so, subject to the following 
+# conditions:
+
+# The above copyright notice and this permission notice shall be included in all copies 
+# or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+# INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+# PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+# FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR 
+# OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR 
+# OTHER DEALINGS IN THE SOFTWARE.
+#----------------------------------------------------------------------------------------------
+
+
+
+import argparse
+import sys
+import os
+import subprocess
+from pathlib import Path
+import json
+import shlex
+from dockerdeploy import Docker
+from kubernetesdeploy import Kubernetes
+from pksdeploy  import Pks
+import logging
+
+"""
+    Name: RTS4MADlib
+    <developers>
+        <developer>
+            <id>spaladugu</id>
+            <name>Sridhar Paladugu</name>
+            <email>spaladugu@pivotal.io</email>
+            <organization>Pivotal Software, Inc.</organization>
+            <organizationUrl>https://pivotal.io/pivotal-greenplum</organizationUrl>
+            <roles>
+                <role>Machine Learning Data Engineer </role>
+                <role>RTS-For-MADlib Lead/Committer</role>
+            </roles>
+        </developer>
+    </developers>
+    Description: A deployment tool for MADlib ML models.
+
+"""
+logging.basicConfig(format='%(message)s', level=logging.INFO)
+
+def usage(msg):
+    logging.info(msg)
+    logging.info( "Usage:->")
+    logging.info( "-------------------------------------------------------------------------------------------")
+    logging.info( "rts4madlib --name unique_name --type type --action action --target target --inputJson file")
+    logging.info( " name -> module name")
+    logging.info( " action -> deplopy|undeploy")
+    logging.info( " type -> flow|model|featuresengine|featurecache")
+    logging.info( " target -> docker|kubernetes|pks")
+    logging.info( " inputJson -> path to input json for model **only if action is deploy**")
+    logging.info("--------------------------------------------------------------------------------------------")
+
+docker = Docker()
+kubernetes = Kubernetes()
+pks = Pks()
+
+def parseModuleName(type):
+    if type == 'model':
+        moduleName = "rts-for-madlib-model"
+    elif type == 'featuresengine':
+        moduleName = "rts-for-madlib-featuresengine"
+    elif type == 'featurecache':
+        moduleName = "rts-for-madlib-featurescachemanager"
+    elif type == 'flow':
+        moduleName = "rts-for-madlib-mlmodelflow"
+    else:
+        usage("ERROR: type of module is not understood.")
+        system.exit(-1)
+    return moduleName
+
+
+def deploy(arguments, appName, input):
+    moduleName = parseModuleName(arguments.type)
+    target = arguments.target
+    moduleInput = json.dumps(input)
+    if (target == "docker"):
+        logging.info ("calling docker deploy with "+appName)
+        docker.deploy(moduleName, appName, moduleInput)
+    elif (target == "kubernetes"):
+        kubernetes.deploy(moduleName, appName, moduleInput)
+    elif (target == "pks"):
+        pks.deploy(moduleName, moduleInput)
+
+def undeploy(arguments):
+    moduleName = parseModuleName(arguments.type)
+    target = arguments.target
+    appName = arguments.name
+    if (target == "docker"):
+        docker.undeploy(moduleName, appName)
+    elif (target == "kubernetes"):
+        kubernetes.undeploy(moduleName, appName)
+    elif (target == "pks"):
+        pks.undeploy(moduleName)
+
+def bundleDeploy(target, appName, input):
+    packages= input['deploy-packages']
+    services = {}
+    for package in packages:
+        moduleName = parseModuleName(package)
+        logging.info("\n")
+        logging.info ("processing deployment package =>"+package)
+        moduleInput = json.dumps(input[package])
+        if (target == "docker"):
+            docker.deploy(moduleName, appName, moduleInput)
+            logging.info ("****** module name => " + moduleName + "****** app name => " + appName)
+            if moduleName == "rts-for-madlib-model":
+               services['app.model-endpoint'] = docker.getServiceUrl(moduleName, appName)
+            elif moduleName == "rts-for-madlib-featuresengine":
+               services['app.feature-engine-endpoint'] = docker.getServiceUrl(moduleName, appName)
+        elif (target == "kubernetes"):
+            kubernetes.deploy(moduleName, appName, moduleInput)
+            if moduleName == "rts-for-madlib-model":
+               services['app.model-endpoint']="http://"+appName+"-madlibrest:8085/predict"
+            elif moduleName == "rts-for-madlib-featuresengine":
+               services['app.feature-engine-endpoint']="http://"+appName+"-madlibfeaturesengine:8086/features/calculate"
+        elif (target == "pks"):
+            pks.deploy(moduleName, moduleInput)
+    services_json = json.dumps(services)
+    logging.info("****** Service End points *******")
+    logging.info(services_json)
+    if (target == "docker"):
+       docker.deploy("rts-for-madlib-mlmodelflow", appName, services_json)
+    elif (target == "kubernetes"):
+       kubernetes.deploy("rts-for-madlib-mlmodelflow", appName, services_json)
+    elif (target == "pks"):
+        pks.deploy("rts-for-madlib-mlmodelflow", services_json)
+
+def bundleUndeploy(target, appName):
+    if (target == "docker"):
+        docker.undeploy("rts-for-madlib-model", appName)
+        docker.undeploy("rts-for-madlib-featuresengine", appName)
+        docker.undeploy("rts-for-madlib-mlmodelflow", appName)
+    elif (target == "kubernetes"):
+        kubernetes.undeploy("rts-for-madlib-model", appName)
+        kubernetes.undeploy("madlib-featuresengine", appName)
+        kubernetes.undeploy("rts-for-madlib-mlmodelflow", appName)
+    elif (target == "pks"):
+        pks.undeploy("rts-for-madlib-model")
+        pks.undeploy("madlib-featuresengine")
+        docker.undeploy("rts-for-madlib-mlmodelflow")
+
+def main():
+    parser_1 = argparse.ArgumentParser()
+    parser_1.add_argument("--name", help="unique name for module")
+    parser_1.add_argument("--action", choices=['deploy', 'undeploy'])
+    parser_1.add_argument("--type", choices=['flow', 'model', 'featuresengine', 'featurecache', 'featuregenerator'])
+    parser_1.add_argument("--target", choices=['docker', 'kubernetes', "pks"])
+    parser_1.add_argument("--inputJson", nargs="?", help="input for corresponding module")
+    arguments = parser_1.parse_args()
+    if len(sys.argv)==1:
+            usage("No arguments passed!")
+            sys.exit()
+    'logging.info (arguments)'
+    madlibflowHome = os.environ.get('MADLIBFLOW_HOME')
+    if madlibflowHome == None:
+        logging.info ("Please setup environment entry MADLIB_HOME to MADlibFlow install folder!")
+        sys.exit()
+    appName = arguments.name
+    logging.info ("deployName => " + appName)
+    dirname, filename = os.path.split(os.path.abspath(__file__))
+    target = arguments.target
+    if arguments.action == 'deploy':
+        if arguments.inputJson is None:
+          usage("ERROR: missing input JSON")
+          sys.exit(-1)
+        else:
+          inputPath = Path(arguments.inputJson)
+          if inputPath.is_file():
+            with open(arguments.inputJson, 'r') as jsonFile:
+              input = json.load(jsonFile)
+              if arguments.type == 'flow':
+                  bundleDeploy(target, appName, input)
+              else:
+                  deploy(arguments, appName, input)
+          else:
+            logging.info ("file path provided is not valid, exiting!")
+            sys.exit(-1)
+    elif (arguments.action == 'undeploy'):
+        if arguments.type == 'flow':
+            bundleUndeploy(target, appName)
+        else:
+            undeploy(arguments)
+    elif (arguments.action == 'stop'):
+        logging.info ("stop?")
+    else:
+        logging.info ("not valid action. Exiting!.")
+
+
+if __name__ == "__main__":
+   main()

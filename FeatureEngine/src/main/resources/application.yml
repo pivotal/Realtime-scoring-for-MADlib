@@ -1,0 +1,103 @@
+logging:
+  file: MADlibFeatureService.log
+  level:
+    org.springframework: DEBUG
+    io.pivotal: INFO 
+    
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"    
+server:
+      port: 8086          
+  
+spring:
+  application:
+    name:  Madlib Features engine Application
+    
+#  profiles:
+#     active:
+#     - nocache
+
+  jpa:
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+
+  datasource:
+    url: jdbc:postgresql://127.0.0.1:5432/madlibdb
+    username: madlibuser
+    password: justworks!
+    driver-class-name: org.postgresql.Driver
+
+---
+ 
+pcc:
+  locators: 
+  port: 1
+  username: 
+  password: 
+
+---
+gemfire:
+  locator: 
+  port: 1
+  username: 
+  password:       
+  server:
+
+---
+
+redis:
+  clustertype: 
+  hostname: 
+  port: 1
+  password:
+  master:
+  servers:
+    -
+#redis:
+#  clustertype: standlone
+#  hostname: 127.0.0.1
+#  port: 6379
+#  master:
+#  servers:
+    -
+# Redis Sentinel    
+#redis:
+#  clustertype: ha
+#  master: "masternode"
+#  servers:
+#    - 127.0.0.1:26379
+#    - 127.0.0.1:26380
+
+---
+feature-engine:
+  featurename: 
+  featuredescription: 
+  featuresschema: madlibflow
+  payloadtable: message
+  featurequery: 
+  featurefunction:
+  cacheenabled: 
+  cacheentities:  
+     
+   
+    
+# app:
+#   featurename: CreditTransactionFeatures
+#   featuredescription: Credit Transaction Features
+#   featuresschema: madlib_demo
+#   payloadtable: message
+#   featurequery: SELECT message.*, merchant_features.merchant_name, account_features.* ,log(message.transaction_amount + 1) AS log_transaction_amt FROM madlib_demo.message message JOIN madlib_demo.merchant_features  merchant_features ON  message.merchant_name=merchant_features.merchant_name JOIN madlib_demo.account_features account_features ON  message.account_number=account_features.account_number
+#   cacheenabled: true
+#   cacheentities:  
+#     account_features: account_number
+#     merchant_features: merchant_name  
+     
+  
+  
+  

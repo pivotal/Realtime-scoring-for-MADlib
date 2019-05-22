@@ -1,0 +1,31 @@
+#-------------------------------------------------------------------------------
+# Copyright 2019 Pivotal Software Inc
+# 
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not
+# use this file except in compliance with the License.  You may obtain a copy
+# of the License at
+# 
+#   http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
+# License for the specific language governing permissions and limitations under
+# the License.
+#-------------------------------------------------------------------------------
+ {
+	"gemfire.locator": "localhost",
+	"gemfire.port": 10334,
+	"gemfire.username": "xxxxxx",
+	"gemfire.password": "yyyyyy",
+	"app.featurename": "CreditTransactionFeatures",
+	"app.featuredescription": "Credit Transaction Features",
+	"app.featuresschema": "madlib_demo",
+	"app.payloadtable": "message",
+	"app.featurequery": "SELECT message.*, merchant_features.merchant_name, account_features.* ,log(message.transaction_amount + 1) AS log_transaction_amt FROM madlib_demo.message message JOIN madlib_demo.merchant_features  merchant_features ON  message.merchant_id=merchant_features.merchant_id JOIN madlib_demo.account_features account_features ON  message.account_number=account_features.account_number",
+	"app.cacheenabled": "true",
+	"app.cacheentities": {
+		"account_features": "account_number",
+		"merchant_features": "merchant_id"
+	}
+}
