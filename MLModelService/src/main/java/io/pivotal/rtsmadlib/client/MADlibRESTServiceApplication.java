@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Profile;
 
 import io.pivotal.rtsmadlib.client.db.repo.ContainerDbRepository;
 import io.pivotal.rtsmadlib.client.db.repo.ExportImplortRepository;
@@ -37,6 +38,7 @@ import io.pivotal.rtsmadlib.client.meta.AppProperties;
  *
  */
 @SpringBootApplication(scanBasePackages = "io.pivotal")
+@Profile("!test")
 public class MADlibRESTServiceApplication implements CommandLineRunner {
 
 	static final Log log = LogFactory.getLog(MADlibRESTServiceApplication.class.getName());

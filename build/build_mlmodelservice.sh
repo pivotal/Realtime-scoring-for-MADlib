@@ -46,7 +46,7 @@ set -e
 echo "${BCyan}Building the MLModelService jar.......${NONE}"
 mkdir -p ../dist
 cd ../MLModelService && \
- mvn clean install -DskipTests && \
+ mvn clean install && \
  cp ./target/MLModelService-1.0.0-SNAPSHOT.jar ../dist && 
  cd ../build
 

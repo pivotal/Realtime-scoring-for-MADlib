@@ -32,7 +32,7 @@ import io.pivotal.rtsmadlib.client.features.model.MADlibFeatureKey;
  *
  */
 @Component
-@Profile("nocache")
+@Profile(value = {"nocache", "test"})
 public class DefaultCacheReader implements CacheReader {
 	
 	//TODO: need to find a better implementation to handle no cache

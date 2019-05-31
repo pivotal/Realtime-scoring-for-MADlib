@@ -46,7 +46,7 @@ set -e
 echo "${BCyan}Building the FeaturesCacheManager jar.......${NONE}"
 mkdir -p ../dist
 cd ../FeaturesCacheManager && \
-     	mvn clean install -DskipTests && \
+     	mvn clean install && \
      	cp ./target/FeaturesCacheManager-1.0.0-SNAPSHOT.jar ../dist && \
      	cd ../build
 

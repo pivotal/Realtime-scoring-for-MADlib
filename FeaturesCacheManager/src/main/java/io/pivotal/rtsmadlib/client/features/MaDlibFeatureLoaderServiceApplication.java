@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 
 import io.pivotal.rtsmadlib.client.features.meta.ApplicationProperties;
@@ -36,6 +37,7 @@ import io.pivotal.rtsmadlib.client.features.service.MADlibFeaturesLoaderService;
  *
  */
 @SpringBootApplication
+@Profile("!test")
 public class MaDlibFeatureLoaderServiceApplication implements CommandLineRunner{
 	static final Log log = LogFactory.getLog(MaDlibFeatureLoaderServiceApplication.class.getName());
 	@Autowired

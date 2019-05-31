@@ -21,22 +21,49 @@
 
 package io.pivotal.rtsmadlib.client;
 
+import java.io.File;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import io.pivotal.rtsmadlib.client.MADlibRESTServiceApplication;
+import org.testcontainers.containers.DockerComposeContainer;
 /**
  * @author Sridhar Paladugu
  *
  */
+
+
+
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes=MADlibRESTServiceApplication.class )
-@ActiveProfiles(profiles="test")
-public class MADlibRESTServiceApplicationTests {
+@SpringBootTest(classes=MADlibRESTServiceApplication.class)
+@ActiveProfiles("test")
+public class MADlibRESTServiceApplicationTests{
+	
+
+	@ClassRule
+    public static DockerComposeContainer madlibContainer = 
+      new DockerComposeContainer(
+        new File("src/test/resources/docker-compose.yml"))
+      ;
+
 	@Test
 	public void contextLoads() {
+	}
+	
+	
+	@Before
+	public void before() {
+		System.out.println("Here");
+
+    }
+
+	@After
+	public void teardown() {
+		System.out.println("Here");
 	}
 }

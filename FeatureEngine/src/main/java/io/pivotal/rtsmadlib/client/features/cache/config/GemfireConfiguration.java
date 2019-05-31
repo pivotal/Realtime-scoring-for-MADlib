@@ -35,7 +35,7 @@ import org.springframework.data.gemfire.repository.config.EnableGemfireRepositor
 @Profile("gemfire")
 @ImportResource("classpath:gemfire-client-cache.xml")
 @EnableGemfireRepositories
-@EnableEntityDefinedRegions(basePackages = "io.pivotal.madlib.client.features.model")
+@EnableEntityDefinedRegions(basePackages = "io.pivotal.rtsmadlib.client.features.model")
 public class GemfireConfiguration {
 }
 

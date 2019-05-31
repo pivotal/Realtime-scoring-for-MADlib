@@ -45,7 +45,7 @@ docker_repo=$1
 
 echo "${BCyan}Building the FeatureEngine jar.......${NONE}"
 mkdir -p ../dist && cd ../FeatureEngine \
-  && mvn clean install -DskipTests && \
+  && mvn clean install && \
   cp ./target/FeatureEngine-1.0.0-SNAPSHOT.jar ../dist && \
   cd ../build
 

@@ -39,7 +39,7 @@ echo "--------------------------------------------------------------------------
 docker_repo=$1
 
 echo "${BCyan}Building the MLModelflow jar.......${NONE}"
-cd ../MLModelflow && mvn clean install -DskipTests && \
+cd ../MLModelflow && mvn clean install && \
  cp ./target/MLModelFlow-1.0.0-SNAPSHOT.jar ../dist && \
  cd ../build
 
