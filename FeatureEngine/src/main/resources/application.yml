@@ -27,12 +27,18 @@ spring:
           use_jdbc_metadata_defaults: false
     database-platform: org.hibernate.dialect.PostgreSQL9Dialect
 
-  datasource:
-    url: jdbc:postgresql://127.0.0.1:5432/madlibdb
-    username: madlibuser
-    password: justworks!
-    driver-class-name: org.postgresql.Driver
+modeldb-datasource:
+  jdbc-url: 
+  username: 
+  password: 
+  driverClassName: org.postgresql.Driver
 
+containerdb-datasource:
+  jdbc-url: jdbc:postgresql://127.0.0.1:5432/madlibdb?stringtype=unspecified
+  username: madlibuser
+  password: justworks!
+  driverClassName: org.postgresql.Driver
+  leak-detection-threshold: 3000
 ---
  
 pcc:
@@ -80,8 +86,11 @@ feature-engine:
   featuredescription: 
   featuresschema: madlibflow
   payloadtable: message
+  postgreshome: /usr/lib/postgresql/9.6/bin
+  workdir: /opt/pivotal/rts-for-madlib
   featurequery: 
-  featurefunction:
+  featurefunctions:
+     -       
   cacheenabled: 
   cacheentities:  
      

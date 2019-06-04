@@ -45,7 +45,7 @@ import io.pivotal.rtsmadlib.client.features.model.MADlibFeature;
 import io.pivotal.rtsmadlib.client.features.model.MADlibFeatureKey;
 
 /**
- * @author sridharpaladugu
+ * @author sridha rpaladugu
  *
  */
 @Service
