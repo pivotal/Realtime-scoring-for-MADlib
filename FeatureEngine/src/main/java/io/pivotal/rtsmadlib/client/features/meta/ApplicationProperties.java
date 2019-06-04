@@ -21,7 +21,6 @@
 
 package  io.pivotal.rtsmadlib.client.features.meta;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -42,11 +41,8 @@ public class ApplicationProperties {
 	public String featureDescription;
 	public String payloadTable;
 	public String featureQuery;
-	public List<String> featureFunctions;
 	public String featuresSchema;
 	public Boolean cacheEnabled;
 	public Map<String, String> cacheEntities;
-	public String postgresHome;
-	public String workdir;
 	
 }
