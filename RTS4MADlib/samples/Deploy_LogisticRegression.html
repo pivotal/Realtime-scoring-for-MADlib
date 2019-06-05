@@ -1,0 +1,96 @@
+<html>
+<head>
+<title>Deploy Logistic Regression Model</title>
+</head>
+<body>
+	<h1>Installing Apache MADlib model on Docker as REST service</h1>
+
+	In this sample let us explore how to deploy model on a Docker container
+	for quick testing.
+	<div>
+		<h2>PART 1: Model Development On Greenplum cluster</h2>
+
+		<ol>
+			<li>In order to run the demo locally, we need a docker
+				environment. If you do not have docker running locally, please setup
+				docker by following instructions on <a
+				href="https://www.docker.com/get-started">Docker Getting started</a>
+				<br>
+			</li>
+			<li>Next step is to have a running Greenplum environment.Please
+				run the below script to setup a Greenplum instance on docker; <br>
+			<b><i>$RTSMADLIB_HOME/bin/setup_greenplum_docker</i></b> <br>This
+				script will download the image and starts the container, depending
+				on your network speed the download take few minutes. <br>
+			</li>
+			<li>Verify Greenplum cluster by running the below command; when
+				prompted use pivotal for password. <br> <b><i>psql -h
+						127.0.0.1 -p 9432 -d gpadmin -U gpadmin -c "\dn"</i></b> <br>This
+				should print list of schemas. <br>
+			</li>
+
+			<li>Once we verify the greenplum and MADlib, we are ready to
+				install sample data and develop a model on greenplum. Please run
+				below from command line to create a sample data and train a model; <br>
+			<b><i>psql -h 127.0.0.1 -p 9432 -d gpadmin -U gpadmin -f
+						$RTSMADLIB_HOME/samples/madlib_model_demo/sql/logistic_regression.sql</i></b>
+				<br> Verify that you have the model created in Greenplum; <br>
+			<b><i>psql -h 127.0.0.1 -p 9432 -d gpadmin -U gpadmin -c
+						"select * from madlib_demo.patients_logregr"</i></b> <br>The output
+				you see above is from the model logistic regression model table.
+			</li>
+		</ol>
+	</div>
+	<div>
+		<h2>PART 2: Model Deployment On SpringBoot Docker container.</h2>
+
+		In this section we deploy the model developed on Greenplum to a Docker
+		container as REST service.
+		<ol>
+			<li>Edit the file and change Greenplum connection information. <br>
+			<b><i>$RTSMADLIB_HOME/samples/madlib_model_demo/input/logistic_regression.json</i></b><br>
+			<li>Deploy the model to docker using below command; <br>
+			<b><i>rts4madlib --name patientslrm --action deploy --type
+						model --target docker --inputJson
+						$RTSMADLIB_HOME/samples/madlib_model_demo/input/logistic_regression.json</i></b>
+				<br>Notice the output of the deployment for port, This is
+				dynamically generated in a range. We need this to invoke the
+				service.
+			</li>
+			<li>Once the command finished, you can verify the container
+				created using; <br>
+			<b><i>docker ps</i></b>
+			</li>
+			<li>Once the container is running run below to verify the REST
+				end point. Please change the port as per the output from step 2. <br>
+			<b><i>curl -v -H "Accept:application/json"
+						http://localhost:8091/actuator/info</i></b> <br>This will return the
+				model deployed in the container. Once this return successful code we
+				move on to further testing.
+			</li>
+			<li>Now we are ready to do predict operations on this newly
+				deployed model. Please change the port as per the output from step <br>
+			<b><i>curl -v -H "Content-Type:application/json" -X POST
+						http://localhost:8091/predict -d '{ "treatment": 1,
+						"trait_anxiety": 70 }'</i></b> <br>
+			<i>Result: [ { "logregr_predict": true, "logregr_predict_prob":
+					0.7202230289415188 }] </i>
+			</li>
+		</ol>
+		<br>That's it, we successfully deployed MADlib model as REST end
+		point.
+	</div>
+	<div>
+		<h2>PART 3: Undeploy</h2>
+		<ol>
+			<li>To un-deploy the model please run below command;<br> <b><i>rts4madlib
+						--name patientslrm --action undeploy --type model --target docker
+				</i></b> <br> To verify the container is removed, please run the <b><i>docker
+						ps</i></b> command and and verify there is no madlib model container in
+				the output.
+			</li>
+		</ol>
+	</div>
+
+</body>
+</html>
