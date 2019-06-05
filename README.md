@@ -39,15 +39,48 @@ After successfully login to registry we will start the build process.
     $ ./build all $docker_repo 
    ``` 
 
-If you wish to build individual containers then there are scripts available in $project_root/build folder. For example;
-    ```
-      $ cd $project_root 
-      $ ./build_mlmodelservice.sh $docker_repo
-      $ ./build_featurescachemanager.sh $docker_repo
-      $ ./build_featuresengine.sh $docker_repo
-      $ ./build_mlmodelflow.sh $docker_repo 
-    ```
-# Deploy
+If you wish to build individual containers then there are scripts available in $project_root/build folder. 
+For example;
+ ``` 
+     $ cd $project_root/build
+     $ ./build_mlmodelservice.sh $docker_repo
+     $ ./build_featurescachemanager.sh $docker_repo
+     $ ./build_featuresengine.sh $docker_repo
+     $ ./build_mlmodelflow.sh $docker_repo 
+  ``` 
+    
+# Installing client tool
+To install the RTS4MADlib tooling please run the build commands as mentioned in build section.
+After the build please follow below steps;
+1. cp Realtime-scoring-for-MADlib/dist/rts4madlib.tar.gz ~/
+2. cd ~
+3. tar -zxvf rts4madlib.tar.gz
+4. cd ~/RTS4MADlib
+5. ./setup ; 
+6. source ~/.bash_profile or ~/.bashrc 
+
+after this please run rts4madlib and you should see below output.
+```
+$ rts4madlib
+No arguments passed!
+Usage:->
+------------------------------------------------------------------------------------------
+rts4madlib --name unique_name --type type --action action --target target --inputJson file
+    name -> module name
+    action -> deplopy|undeploy
+    type -> flow|model|featuresengine|featurecache
+    target -> docker|kubernetes|pks
+    inputJson -> path to input json for model **only if action is deploy**
+------------------------------------------------------------------------------------------
+```
+
+Now we are ready to start deploying models.
+
+# Deploy 
+RTS4MADlib let you deploy a MADlib Model to Docker, PKS or Kubernetes environments. In $RTSMADLIB_HOME/samples/ folder we supply some samples to test the model deployment.
+
+## Installing a MADlib model on Docker as REST service:
+   [Logistic Regression](https://github.com/pivotal/Realtime-scoring-for-MADlib/blob/master/RTS4MADlib/samples/Deploy_LogisticRegression.html)
 
 # Usage
     
