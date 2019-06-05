@@ -81,6 +81,7 @@ RTS4MADlib let you deploy a MADlib Model to Docker, PKS or Kubernetes environmen
 
 ## Installing a MADlib model on Docker as REST service:
    [Logistic Regression](https://github.com/pivotal/Realtime-scoring-for-MADlib/blob/master/RTS4MADlib/samples/Deploy_Model.html)
+## Installing a MADlib model with multiple model tables on Docker as REST service:   
    [Random Forest](https://github.com/pivotal/Realtime-scoring-for-MADlib/blob/master/RTS4MADlib/samples/Deploy_model_with_custom_resultset.html)
 
 # Usage
