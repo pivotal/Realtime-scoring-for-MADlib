@@ -44,6 +44,9 @@ In this section we deploy the model developed on Greenplum to a Docker container
  
  ``` 
    curl -v -H "Content-Type:application/json" -X POST http://localhost:8091/predict -d '{ "treatment": 1, "trait_anxiety": 70}'
+   
+   Result:
+   
    [{"id":2,"class":"Play","estimated_prob_Don't Play":0.6,"estimated_prob_Play":0.4}]
  ``` 
  
