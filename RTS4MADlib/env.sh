@@ -27,4 +27,4 @@
 
 #!/bin/sh
 
-export DOCKER_REPO=sridharp123
+export DOCKER_REPO=pivotaldata

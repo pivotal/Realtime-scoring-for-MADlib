@@ -74,7 +74,7 @@ pks = Pks()
 def parseModuleName(type):
     if type == 'model':
         moduleName = "rts-for-madlib-model"
-    elif type == 'featuresengine':
+    elif type == 'feature-engine':
         moduleName = "rts-for-madlib-featuresengine"
     elif type == 'featurecache':
         moduleName = "rts-for-madlib-featurescachemanager"
@@ -168,9 +168,9 @@ def main():
             usage("No arguments passed!")
             sys.exit()
     'logging.info (arguments)'
-    madlibflowHome = os.environ.get('MADLIBFLOW_HOME')
+    madlibflowHome = os.environ.get('RTSMADLIB_HOME')
     if madlibflowHome == None:
-        logging.info ("Please setup environment entry MADLIB_HOME to MADlibFlow install folder!")
+        logging.info ("Please setup environment entry RTSMADLIB_HOME to RTS4MADlib install folder!")
         sys.exit()
     appName = arguments.name
     logging.info ("deployName => " + appName)

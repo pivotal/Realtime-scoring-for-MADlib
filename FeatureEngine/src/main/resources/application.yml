@@ -81,9 +81,9 @@ feature-engine:
   featuresschema: madlibflow
   payloadtable: message
   featurequery: 
-  featurefunction:
   cacheenabled: 
   cacheentities:  
+    -
      
    
     

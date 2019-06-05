@@ -38,7 +38,7 @@ echo "2) Build FeatureEngine docker image by using Dockerfile"
 echo "3) Publish FeatureEngine image to docker repository if registry specified"
 echo ""
 echo "# The below command will perform all steps"
-echo "# $ ./build_featureengine.sh sridharp123 "
+echo "# $ ./build_featureengine.sh pivotaldata "
 echo "------------------------------------------------------------------------------"
 
 docker_repo=$1

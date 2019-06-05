@@ -49,7 +49,7 @@ madlibrest:
   modelinputtable: 
   modelquery: 
   resultstable: 
-  resultsquery: 
+  resultsquery:  
   postgreshome: /usr/lib/postgresql/9.6/bin
   workdir: /opt/pivotal/rts-for-madlib
 
