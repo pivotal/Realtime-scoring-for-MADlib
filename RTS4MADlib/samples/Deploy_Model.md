@@ -30,7 +30,7 @@ In this section we deploy the model developed on Greenplum to a Docker container
  - Edit the file $RTSMADLIB_HOME/samples/madlib_model_demo/input/logistic_regression.json and change Greenplum connection information. <br>
  - Deploy the model to docker using below command; 
    ```
-	rts4madlib --name patientslrm --action deploy --type model --target docker --inputJson $RTSMADLIB_HOME/samples/madlib_model_demo/input/logistic_regression.json</i></b>
+	rts4madlib --name patientslrm --action deploy --type model --target docker --inputJson $RTSMADLIB_HOME/samples/madlib_model_demo/input/logistic_regression.json
     ```
     Notice the output of the deployment for port, This is dynamically generated in a range. We need this to invoke the service.
  - Once the command finished, you can verify the container created using `docker ps` command
@@ -39,12 +39,15 @@ In this section we deploy the model developed on Greenplum to a Docker container
      curl -v -H "Accept:application/json" http://localhost:8091/actuator/info
    ```
    This will return the model deployed in the container. Once this return successful code we move on to further testing.
- - Now we are ready to do predict operations on this newly deployed model. Please change the port as per the output from step 
-   ``` curl -v -H "Content-Type:application/json" -X POST http://localhost:8091/predict -d '{ "treatment": 1, "trait_anxiety": 70 }'
-       
-       Result: [ {"logregr_predict": true, "logregr_predict_prob": 0.7202230289415188}]
-			
-That's it, we successfully deployed MADlib model as REST end point.
+ - Now we are ready to do predict operations on this newly deployed model. 
+ Please change the port as per the output from step 
+ 
+ ``` 
+   curl -v -H "Content-Type:application/json" -X POST http://localhost:8091/predict -d '{ "treatment": 1, "trait_anxiety": 70}'
+   [{"id":2,"class":"Play","estimated_prob_Don't Play":0.6,"estimated_prob_Play":0.4}]
+ ``` 
+ 
+ That's it, we successfully deployed MADlib model as REST end point.
 
 ### PART 3: Undeployment 
  To un-deploy the model please run below command;
