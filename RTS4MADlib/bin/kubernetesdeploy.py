@@ -92,7 +92,7 @@ class Kubernetes:
         subprocess.check_call(shlex.split(createConfigCmd))
 
     def getKubeFolderName(self):
-        madlibflowHome = os.environ.get('MADLIBFLOW_HOME')
+        madlibflowHome = os.environ.get('RTSMADLIB_HOME')
         folder = madlibflowHome + '/kubernetes'
         return folder
 
@@ -107,8 +107,8 @@ class Kubernetes:
         with open(folder + '/' + templateFileName, 'r') as templateFile:
             templateFileData = templateFile.read()
         newTemplateFileData1 = templateFileData.replace('$APP_NAME', appName)
-        madlibflowDockerReg = os.environ.get('MADLIBFLOW_DOCKER_REG')
-        newTemplateFileData2 = newTemplateFileData1.replace('$MADLIBFLOW_DOCKER_REG', madlibflowDockerReg)
+        madlibflowDockerReg = os.environ.get('RTSMADLIB_DOCKER_REG')
+        newTemplateFileData2 = newTemplateFileData1.replace('$RTSMADLIB_DOCKER_REG', madlibflowDockerReg)
         if moduleName == "madlibrest" :
             newTemplateFileData = newTemplateFileData2.replace('$REPLICAS', "2")
         elif moduleName == "madlibfeaturesengine" :

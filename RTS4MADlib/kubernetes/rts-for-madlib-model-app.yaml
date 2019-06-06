@@ -23,27 +23,27 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    run: $APP_NAME-madlibrest
-  name: $APP_NAME-madlibrest
+    run: $APP_NAME-rts-for-madlib-model
+  name: $APP_NAME-rts-for-madlib-model
 spec:
   replicas: $REPLICAS
   selector:
     matchLabels:
-      run: $APP_NAME-madlibrest-exposed
+      run: $APP_NAME-rts-for-madlib-model-exposed
   template:
     metadata:
       labels:
-        run: $APP_NAME-madlibrest-exposed
+        run: $APP_NAME-rts-for-madlib-model-exposed
     spec:
       containers:
-        - name: $APP_NAME-madlibrest
-          image: $MADLIBFLOW_DOCKER_REG/madlibflow/madlibrest:1.0
+        - name: $APP_NAME-rts-for-madlib-model
+          image: $RTSMADLIB_DOCKER_REG/rts4madlib-model:1.0
           imagePullPolicy: IfNotPresent
           env:
             - name: MADLIB_APP_JSON
               valueFrom:
                 configMapKeyRef:
-                  name: $APP_NAME-madlibrest-config
+                  name: $APP_NAME-rts-for-madlib-model-config
                   key: springjson
           lifecycle:
             postStart:
@@ -64,8 +64,8 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    run: $APP_NAME-madlibrest
-  name: $APP_NAME-madlibrest
+    run: $APP_NAME-rts-for-madlib-model
+  name: $APP_NAME-rts-for-madlib-model
 spec:
   type: LoadBalancer	
   ports:
@@ -78,4 +78,4 @@ spec:
     port: 5432
     targetPort: 5432
   selector:
-    run: $APP_NAME-madlibrest-exposed
+    run: $APP_NAME-rts-for-madlib-model-exposed

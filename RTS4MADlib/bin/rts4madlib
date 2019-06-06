@@ -62,7 +62,7 @@ def usage(msg):
     logging.info( "rts4madlib --name unique_name --type type --action action --target target --inputJson file")
     logging.info( " name -> module name")
     logging.info( " action -> deplopy|undeploy")
-    logging.info( " type -> flow|model|featuresengine|featurecache")
+    logging.info( " type -> flow|model|feature-engine|featurecache")
     logging.info( " target -> docker|kubernetes|pks")
     logging.info( " inputJson -> path to input json for model **only if action is deploy**")
     logging.info("--------------------------------------------------------------------------------------------")
@@ -127,9 +127,9 @@ def bundleDeploy(target, appName, input):
         elif (target == "kubernetes"):
             kubernetes.deploy(moduleName, appName, moduleInput)
             if moduleName == "rts-for-madlib-model":
-               services['app.model-endpoint']="http://"+appName+"-madlibrest:8085/predict"
+               services['app.model-endpoint']="http://"+appName+"-rts-for-madlib-model:8085/predict"
             elif moduleName == "rts-for-madlib-featuresengine":
-               services['app.feature-engine-endpoint']="http://"+appName+"-madlibfeaturesengine:8086/features/calculate"
+               services['app.feature-engine-endpoint']="http://"+appName+"-rts-for-madlib-featuresengine:8086/features/calculate"
         elif (target == "pks"):
             pks.deploy(moduleName, moduleInput)
     services_json = json.dumps(services)
@@ -149,7 +149,7 @@ def bundleUndeploy(target, appName):
         docker.undeploy("rts-for-madlib-mlmodelflow", appName)
     elif (target == "kubernetes"):
         kubernetes.undeploy("rts-for-madlib-model", appName)
-        kubernetes.undeploy("madlib-featuresengine", appName)
+        kubernetes.undeploy("rts-for-madlib-featuresengine", appName)
         kubernetes.undeploy("rts-for-madlib-mlmodelflow", appName)
     elif (target == "pks"):
         pks.undeploy("rts-for-madlib-model")
@@ -160,7 +160,7 @@ def main():
     parser_1 = argparse.ArgumentParser()
     parser_1.add_argument("--name", help="unique name for module")
     parser_1.add_argument("--action", choices=['deploy', 'undeploy'])
-    parser_1.add_argument("--type", choices=['flow', 'model', 'featuresengine', 'featurecache', 'featuregenerator'])
+    parser_1.add_argument("--type", choices=['flow', 'model', 'feature-engine', 'featurecache'])
     parser_1.add_argument("--target", choices=['docker', 'kubernetes', "pks"])
     parser_1.add_argument("--inputJson", nargs="?", help="input for corresponding module")
     arguments = parser_1.parse_args()
