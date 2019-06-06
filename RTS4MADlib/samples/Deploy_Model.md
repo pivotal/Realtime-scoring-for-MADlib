@@ -1,5 +1,7 @@
 ## Installing Apache MADlib model on Docker as REST service 
 In this sample we will deploy a MADlib model with single model table representing a Logistic Regression Model as REST service.
+The sample represents the example from apache madlib help topic[Logistic Regression]( http://madlib.apache.org/docs/latest/group__grp__logreg.html)
+
 ### PART 1: Model Development On Greenplum cluster
 - In order to run the demo locally, we need a docker environment. If you do not have docker running locally, please setup docker by following instructions on [Docker Getting started](href="https://www.docker.com/get-started")
 - Next step is to have a running Greenplum environment.Please run the below script to setup a Greenplum instance on docker; ` $RTSMADLIB_HOME/bin/setup_greenplum_docker`. This script will download the image and starts the container, depending on your network speed the download take few minutes. <br>
