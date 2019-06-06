@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.pivotal.rtsmadlib.client.features.service.MADlibFeaturesService;
 
 /**
- * @author sridharpaladugu
+ * @author sridhar paladugu
  *
  */
 @RestController
