@@ -23,7 +23,7 @@ RT4MADlib is based on docker containers. The package contain below components;
 The project provides prebuilt containers to download from Pivotal Data Docker repositories. But if you wish to build and deploy containers
 to your organization private docker repo, we provide the scripts to build containers in build folder.
 In order to build and upload docker images to registry you need to run the below command and provide the credentials when prompted.
- ` docker login $registry_server ` 
+ ` docker login docker.io ` 
 After successfully login to registry we will start the build process.
 ###Steps:
 
@@ -76,16 +76,16 @@ rts4madlib --name unique_name --type type --action action --target target --inpu
 
 Now we are ready to start deploying models.
 
-# Deploy 
-RTS4MADlib let you deploy a MADlib Model to Docker, PKS or Kubernetes environments. In $RTSMADLIB_HOME/samples/ folder we supply some samples to test the model deployment.
+
+# Usage
+    RTS4MADlib let you deploy a MADlib Model to Docker, PKS or Kubernetes environments. In $RTSMADLIB_HOME/samples/ folder we supply some samples to test the model deployment.
 
 #### Installing a MADlib model on Docker as REST service:
    [Logistic Regression](https://github.com/pivotal/Realtime-scoring-for-MADlib/blob/master/RTS4MADlib/samples/Deploy_Model.md)
 #### Installing a MADlib model with multiple model tables on Docker as REST service:   
    [Random Forest](https://github.com/pivotal/Realtime-scoring-for-MADlib/blob/master/RTS4MADlib/samples/Deploy_model_with_custom_resultset.md)
-
-# Usage
-    
+#### Installing a MADlib model with Feature engine on minikube as REST service:  
+[Model and Feature Engine](https://github.com/pivotal/Realtime-scoring-for-MADlib/blob/master/RTS4MADlib/samples/Deploy_model_feature-engine_no_cache.md)
 # License
 
 https://opensource.org/licenses/MIT
