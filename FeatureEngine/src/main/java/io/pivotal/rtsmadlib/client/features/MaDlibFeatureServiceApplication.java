@@ -34,6 +34,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author sridhar paladugu
  */
 import io.pivotal.rtsmadlib.client.features.meta.ApplicationProperties;
+import io.pivotal.rtsmadlib.client.features.service.FunctionImporterService;
 import io.pivotal.rtsmadlib.client.features.service.MADlibFeaturesService;
 
 @SpringBootApplication(scanBasePackages = "io.pivotal")
@@ -41,6 +42,8 @@ public class MaDlibFeatureServiceApplication implements CommandLineRunner {
 	static final Log log = LogFactory.getLog(MaDlibFeatureServiceApplication.class.getName());
 	@Autowired
 	ApplicationProperties appProps;
+	@Autowired
+	FunctionImporterService functionImporterService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(MaDlibFeatureServiceApplication.class, args);
@@ -56,6 +59,7 @@ public class MaDlibFeatureServiceApplication implements CommandLineRunner {
 //		Map<String, Object> payload = new HashMap<String, Object>();
 //		payload = om.readValue(json, new TypeReference<Map<String, Object>>() {});
 //		madlibFeaturesService.calculateFeatures(payload);
+		functionImporterService.importFunctions();
 	}
 
 }

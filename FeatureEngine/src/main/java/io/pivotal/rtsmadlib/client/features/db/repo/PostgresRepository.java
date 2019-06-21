@@ -39,10 +39,13 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
+
+import io.pivotal.rtsmadlib.client.features.meta.ApplicationProperties;
 
 /**
  * @author sridhar paladugu
@@ -53,17 +56,22 @@ public class PostgresRepository {
 	static final Log log = LogFactory.getLog(PostgresRepository.class.getName());
 
 	@Autowired
-	JdbcTemplate jdbcTemplate;
+	ApplicationProperties appProps;
 	
 	@Autowired
-	NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	@Qualifier("containerdbJdbcTemplate")
+	JdbcTemplate containerdbJdbcTemplate;
+	
+	@Autowired
+	@Qualifier("containerdbJdbcTemplate")
+	NamedParameterJdbcTemplate containerdbNPJdbcTemplate;
 
 	public void runDDL(String ddl) {
-		jdbcTemplate.execute(ddl);
+		containerdbJdbcTemplate.execute(ddl);
 	}
 
 	public SimpleJdbcInsert jdbcInsert(String tableName) {
-		return new SimpleJdbcInsert(jdbcTemplate.getDataSource()).withTableName(tableName);
+		return new SimpleJdbcInsert(containerdbJdbcTemplate.getDataSource()).withTableName(tableName);
 	}
 
 	public java.sql.Array createSqlArray(Object[] array) {
@@ -88,7 +96,7 @@ public class PostgresRepository {
 		}
 		Array dSqlArray;
 		try {
-			dSqlArray = jdbcTemplate.getDataSource().getConnection().createArrayOf(type, array);
+			dSqlArray = containerdbJdbcTemplate.getDataSource().getConnection().createArrayOf(type, array);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
@@ -99,7 +107,7 @@ public class PostgresRepository {
 		DatabaseMetaData dbm;
 		Boolean exists = false;
 		try {
-			dbm = jdbcTemplate.getDataSource().getConnection().getMetaData();
+			dbm = containerdbJdbcTemplate.getDataSource().getConnection().getMetaData();
 			ResultSet rs = dbm.getTables(null, null, tableName, null);
 			if (rs.next()) {
 				exists = true;
@@ -110,6 +118,9 @@ public class PostgresRepository {
 		return exists;
 	}
 	
+	public void runFeatureFunction(String functionQuery) {
+		containerdbJdbcTemplate.execute(functionQuery);
+	}
 	/**
 	 * 
 	 * @param queryStr
@@ -119,7 +130,7 @@ public class PostgresRepository {
 	public List<Map<String, Object>> runFeaturesQuery(String queryStr) {
 		List<Map<String, Object>> restults = new ArrayList<Map<String, Object>>();
 		log.debug("running the query for features -- "+queryStr +" ....");
-		jdbcTemplate.query(queryStr, (ResultSet rs) -> {
+		containerdbJdbcTemplate.query(queryStr, (ResultSet rs) -> {
 			Map<String, Object> map = new HashMap<String, Object>();
 			ResultSetMetaData rmd = rs.getMetaData();
 			List<String> columns = new ArrayList<String>();
@@ -149,6 +160,12 @@ public class PostgresRepository {
 			sqls[c] = "DELETE from " + table + " WHERE tranKey='"+tranKey+"'";
 			c++;
 		}
-		jdbcTemplate.batchUpdate(sqls);
+		containerdbJdbcTemplate.batchUpdate(sqls);
+	}
+	public void crateFunctions(String newSchema, Map<String, String> functionDefs) { 
+		functionDefs.forEach((functionName, functionSource) -> {
+			String function = functionSource.replace(appProps.getFeaturesSchema(), newSchema);
+			containerdbJdbcTemplate.execute(function);
+		});
 	}
 }

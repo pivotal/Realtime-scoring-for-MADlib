@@ -42,13 +42,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import io.pivotal.rtsmadlib.client.features.cache.CacheReader;
+import io.pivotal.rtsmadlib.client.features.db.repo.ModelDbRepository;
 import io.pivotal.rtsmadlib.client.features.db.repo.PostgresRepository;
 import io.pivotal.rtsmadlib.client.features.meta.ApplicationProperties;
 import io.pivotal.rtsmadlib.client.features.model.MADlibFeature;
 import io.pivotal.rtsmadlib.client.features.model.MADlibFeatureKey;
 
 /**
- * @author sridha rpaladugu
+ * @author sridhar paladugu
  *
  */
 @Service
@@ -62,60 +63,76 @@ public class MADlibFeaturesService {
 
 	@Autowired
 	CacheReader cacheLoader;
-	
+
 	@Autowired
 	Environment env;
+
+	@Autowired
+	ModelDbRepository modelDbRepository;
+
 	@Transactional(rollbackFor = Throwable.class)
 	public List<Map<String, Object>> calculateFeatures(Map<String, Object> payload) {
 		// TODO validations and checked exceptions
 		String tranKey = UUID.randomUUID().toString().replaceAll("-", "_");
-		String schema = appProps.getFeaturesSchema()+tranKey;
+		String schema = appProps.getFeaturesSchema() + tranKey;
 		String payloadTbl = appProps.getPayloadTable();
 		List<Map<String, Object>> fout = new LinkedList<Map<String, Object>>();
 		try {
-			//load incoming message to a table. This table name is provided in manifest, Default is message.
-			payload.forEach((k,v)->log.debug((k + " : " + v)));
+			// load incoming message to a table. This table name is provided in manifest,
+			// Default is message.
+			payload.forEach((k, v) -> log.debug((k + " : " + v)));
 			loadPayloadToPostgres(payload, schema, payloadTbl);
-			//load postgres table with a single cache entry if cache lookup needed
-			//this is also instrumented in manifest.
-			if(appProps.cacheEnabled) {
-				log.info("cache is enabled with "+ env.getActiveProfiles()[0] +" ............");
-				if(appProps.getCacheEntities() != null && appProps.getCacheEntities().size() > 0) {
-					loadFeaturesFromCache(payload, schema);
-				}else {
-					throw new RuntimeException("Caching enabled, but no Cache Entities Specified. Not processing the request.");
-				}
-				
+			// load functions if specified
+			if (appProps.getFeatureFunctions() != null && appProps.getFeatureFunctions().size() > 0) {
+				postgresRepository.crateFunctions(schema, modelDbRepository.getFunctionDefinitions());
 			}
-			//run the features query passed in manifest.
-			//We append trankey to uniquely identify features for this transaction.
+			// load postgresql table with a single cache entry if cache lookup needed
+			// this is also instrumented in manifest.
+			if (appProps.cacheEnabled) {
+				log.info("cache is enabled with " + env.getActiveProfiles()[0] + " ............");
+				if (appProps.getCacheEntities() != null && appProps.getCacheEntities().size() > 0) {
+					loadFeaturesFromCache(payload, schema);
+				} else {
+					throw new RuntimeException(
+							"Caching enabled, but no Cache Entities Specified. Not processing the request.");
+				}
+
+			}
+			// run the features query passed in manifest.
+			// We append trankey to uniquely identify features for this transaction.
 			fout = runFeaturesQuery(tranKey, schema);
-			
-			//cleanup tables data
+
+			// cleanup tables data
 			log.debug("Cleaning the schema for this transaction ......");
-		postgresRepository.runDDL("DROP SCHEMA "+ schema + " CASCADE");
-		}catch (Exception e) {
+			postgresRepository.runDDL("DROP SCHEMA " + schema + " CASCADE");
+		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 		return fout;
 	}
-
-
 
 	/**
 	 * @param tranKey
 	 * @param payloadTbl
 	 * @return
 	 */
-	private List<Map<String, Object>> runFeaturesQuery(String payloadTbl, String schema ) {
+	private List<Map<String, Object>> runFeaturesQuery(String payloadTbl, String schema) {
 		String sql1 = appProps.getFeatureQuery();
 		String featueQuery = sql1.replaceAll(appProps.getFeaturesSchema(), schema);
-		log.info("Running feature Query => \n\t\t" +featueQuery);
-		List<Map<String, Object>> fout = postgresRepository.runFeaturesQuery(featueQuery);
+		log.info("Running feature Query => \n\t\t" + featueQuery);
+		List<Map<String, Object>> fout = null;
+		if (appProps.getFeatureFunctions() != null && appProps.getFeatureFunctions().size() > 0) {
+			if (featueQuery.contains(" from ") || featueQuery.contains(" FROM ")) {
+				fout = postgresRepository.runFeaturesQuery(featueQuery);
+			} else {
+				postgresRepository.runFeatureFunction(featueQuery);
+				fout = postgresRepository.runFeaturesQuery("select * from " + schema + "." + "out_message");
+			}
+		} else {
+			fout = postgresRepository.runFeaturesQuery(featueQuery);
+		}
 		return fout;
 	}
-
-
 
 	/**
 	 * @param payload
@@ -124,14 +141,14 @@ public class MADlibFeaturesService {
 	 */
 	private void loadFeaturesFromCache(Map<String, Object> payload, String schema) {
 		log.info("loading cache table entries relavent to this payload.........");
-		for(String entity: appProps.getCacheEntities().keySet()) {
+		for (String entity : appProps.getCacheEntities().keySet()) {
 			String id = appProps.getCacheEntities().get(entity);
-			log.info("entity ="+entity+", Key = "+id);
+			log.info("entity =" + entity + ", Key = " + id);
 			Object o = payload.get(id);
 			MADlibFeatureKey key = new MADlibFeatureKey(entity, payload.get(id).toString());
 			MADlibFeature feature = cacheLoader.lookUpFeature(key);
-			if(feature == null) {
-				throw new RuntimeException(" No cache found for key "+key.toString());
+			if (feature == null) {
+				throw new RuntimeException(" No cache found for key " + key.toString());
 			}
 			// convert features to a db table
 			StringBuffer sb1 = new StringBuffer();
@@ -148,7 +165,6 @@ public class MADlibFeaturesService {
 		}
 	}
 
-
 	/**
 	 * @param payload
 	 * @param tranKey
@@ -156,8 +172,8 @@ public class MADlibFeaturesService {
 	 * @param payloadTbl
 	 */
 	private void loadPayloadToPostgres(Map<String, Object> payload, String schema, String payloadTbl) {
-		log.debug("loading paylod to postgres table => " + schema+"."+payloadTbl +" .........");
-		postgresRepository.runDDL("CREATE SCHEMA IF NOT EXISTS "+schema);
+		log.debug("loading paylod to postgres table => " + schema + "." + payloadTbl + " .........");
+		postgresRepository.runDDL("CREATE SCHEMA IF NOT EXISTS " + schema);
 		StringBuffer sb = new StringBuffer();
 		sb.append("CREATE TABLE IF NOT EXISTS ").append(schema).append(".").append(payloadTbl).append("( ");
 		processPayloadForDDL(payload, sb);
@@ -170,7 +186,6 @@ public class MADlibFeaturesService {
 		simpleJdbcInsert.execute(parameters);
 	}
 
-		
 	/**
 	 * Iterate thru payload map and create SQL create statement string.
 	 * 
