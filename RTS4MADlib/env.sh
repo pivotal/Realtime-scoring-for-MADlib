@@ -28,3 +28,4 @@
 #!/bin/sh
 
 export DOCKER_REPO=pivotaldata
+export IMG_TAG=1.1

@@ -37,7 +37,7 @@ spec:
     spec:
       containers:
         - name: $APP_NAME-madlibflow
-          image:  $RTSMADLIB_DOCKER_REG/rts4madlib-modelflow:1.0
+          image:  $RTSMADLIB_DOCKER_REG/rts4madlib-modelflow:$RTSMADLIB_IMG_TAG
           imagePullPolicy: IfNotPresent
           env:
             - name: madlibflow_APP_JSON

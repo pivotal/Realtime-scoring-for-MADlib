@@ -21,7 +21,7 @@
 version: '3.3'
 services:
   rts-for-madlib-featurescachemanager:
-    image: $RTSMADLIB_DOCKER_REG/rts4madlib-featurescache:1.0
+    image: $RTSMADLIB_DOCKER_REG/rts4madlib-featurescache:$RTSMADLIB_IMG_TAG
     network_mode: bridge
     ports:
      - "8287-8387:8087"

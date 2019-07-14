@@ -37,7 +37,7 @@ spec:
     spec:
       containers:
         - name: $APP_NAME-rts-for-madlib-model
-          image: $RTSMADLIB_DOCKER_REG/rts4madlib-model:1.0
+          image: $RTSMADLIB_DOCKER_REG/rts4madlib-model:$RTSMADLIB_IMG_TAG
           imagePullPolicy: IfNotPresent
           env:
             - name: MADLIB_APP_JSON

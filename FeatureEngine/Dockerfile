@@ -30,7 +30,7 @@ ARG docker_registry=
 FROM $docker_registry/rts4madlib-pgjava:1.0
 
 USER root
-RUN wget -qq http://dist.apache.org/repos/dist/release/madlib/1.15.1/apache-madlib-1.15.1-bin-Linux.deb -O apache-madlib-1.15.1-bin-Linux.deb
+RUN wget -qq https://archive.apache.org/dist/madlib/1.15.1/apache-madlib-1.15.1-bin-Linux.deb -O apache-madlib-1.15.1-bin-Linux.deb
 RUN gdebi --n apache-madlib-1.15.1-bin-Linux.deb
 RUN rm -f apache-madlib-1.15.1-bin-Linux.deb
 

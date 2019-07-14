@@ -26,41 +26,79 @@
 # Author: Sridhar Paladugu 
 # Email: spaladugu@pivotal.io
 
-reg='\033[00m'
-boldgreen='\033[1;32m'
+NONE='\033[00m'
+BCyan='\033[1;36m'
 uline='\033[4m'
-echo "---------------------------------------------------------------------------------"
-echo ""
-echo "${boldgreen}${uline}Running build for Real time Scoring for MADlib components${reg}"
-echo "1. MLModelService"
-echo "2. FeatureCacheManager"
-echo "3. FeatureEngine"
-echo "4. MLModelflow"
-echo "5. RTS4MADLIB"
-echo ""
-echo "The tool will push the docker containers to a docker registry, if specified."
-echo "For example the below command push all the containers to local docker registry"
-echo " ${boldgreen}./build_all.sh localhost:5000${reg}" 
-echo "---------------------------------------------------------------------------------"
+boldgreen='\033[1;32m'
 
+# ---------------------------------------------------------------------------------"
+# "
+# ${boldgreen}${uline}Running build for Real time Scoring for MADlib components${reg}"
+# 1. MLModelService"
+# 2. FeatureCacheManager"
+# 3. FeatureEngine"
+# 4. MLModelflow"
+# 5. RTS4MADLIB"
+# The tool will push the docker containers to a docker registry, if specified."
+# For example the below command push all the containers to local docker registry"
+#  ${boldgreen}./build_all.sh -R pivotaldata -T 1.0 -P yes" 
+# ---------------------------------------------------------------------------------"
 
-docker_repo=$1
 set -e
+
+usage()
+{
+	echo "$BCyan $uline usage: $NONE"
+    echo "$boldgreen $0 -R docker_repo -T release_tag -P yes/no $NONE"
+   	echo "\t-R -- Name of the docker repository to upload image and download the base images"
+   	echo "\t-T -- version number for tag; for example 1.0"
+   	echo "\t-P -- indicate whether upload image or not (yes/no)" 
+   	exit 1 # Exit script after printing usage	
+} 
+	
+while getopts "R:T:P:" opt
+do
+	case "$opt" in
+		R ) docker_repo="$OPTARG" ;;
+		T ) image_tag="$OPTARG" ;;
+		P ) push_image="$OPTARG" ;;
+		? ) usage ;;
+	esac
+done	
+echo "${BCyan}Building the MLModelFlow with below parameters .......${NONE}"
+echo " repo = $docker_repo"	
+echo " tag = $image_tag"
+echo " push = $push_image"	
+
+if [ -z "$docker_repo" ] 
+then
+	echo "Please provide valid docker repo name";
+	usage
+fi
+
+if [ -z "$image_tag" ] 
+then
+	echo "Please provide valid image tag number, for example 1.0";
+	usage
+fi	
+
+if [ -z "$push_image" ] 
+then
+	echo "Please provide indicate whether upload image or not";
+	usage
+fi
+
+
+
+
+
 #docker system prune -f
 
-if [ -z "$docker_repo" ]
-then	
-    ./build_mlmodelservice.sh
-    ./build_featurescachemanager.sh
-    ./build_featuresengine.sh
-    ./build_mlmodelflow.sh
+./build_mlmodelservice.sh -R $docker_repo -T $image_tag -P $push_image
+./build_featurescachemanager.sh -R $docker_repo -T $image_tag -P $push_image
+./build_featuresengine.sh -R $docker_repo -T $image_tag -P $push_image
+./build_mlmodelflow.sh -R $docker_repo -T $image_tag -P $push_image
 
-else
-    ./build_mlmodelservice.sh $docker_repo
-    ./build_featurescachemanager.sh $docker_repo
-    ./build_featuresengine.sh $docker_repo
-    ./build_mlmodelflow.sh $docker_repo	
-fi
 
 echo "${boldgreen}Finished building Real time Scoring for MADlib container components${reg}"
 

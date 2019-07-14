@@ -21,7 +21,7 @@
 version: '3.3'
 services:
    rts-for-madlib-featuresengine:
-    image: $RTSMADLIB_DOCKER_REG/rts4madlib-featuresengine:1.0
+    image: $RTSMADLIB_DOCKER_REG/rts4madlib-featuresengine:$RTSMADLIB_IMG_TAG
     network_mode: bridge
     ports:
      - "8186-8286:8086"

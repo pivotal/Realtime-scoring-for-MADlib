@@ -10,7 +10,7 @@ management:
       exposure:
         include: "*"    
 server:
-      port: 9196          
+      port: 8086          
   
 spring:
   application:
@@ -30,13 +30,13 @@ spring:
 
 # Database properties
 modeldb-datasource:
-  jdbc-url: jdbc:postgresql://127.0.0.1:9432/test
-  username: gpadmin
-  password: pivotal
+  jdbc-url: 
+  username: 
+  password: 
   driverClassName: org.postgresql.Driver 
 
 containerdb-datasource:
-  jdbc-url: jdbc:postgresql://127.0.0.1:7432/madlibdb?stringtype=unspecified
+  jdbc-url: jdbc:postgresql://127.0.0.1:5432/madlibdb?stringtype=unspecified
   username: madlibuser
   password: justworks!
   driverClassName: org.postgresql.Driver
@@ -57,7 +57,7 @@ gemfire:
   username: 
   password:       
   server:
-
+ 
 ---
 
 redis:

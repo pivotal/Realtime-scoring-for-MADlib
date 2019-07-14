@@ -21,7 +21,7 @@
 version: '3.3'
 services:
   rts-for-madlib-mlmodelflow:
-    image: $RTSMADLIB_DOCKER_REG/rts4madlib-modelflow:1.0
+    image: $RTSMADLIB_DOCKER_REG/rts4madlib-modelflow:$RTSMADLIB_IMG_TAG
     network_mode: bridge
     ports:
      - "8489-8588:8089"

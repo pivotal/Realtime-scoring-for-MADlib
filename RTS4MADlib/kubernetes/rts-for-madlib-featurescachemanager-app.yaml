@@ -37,7 +37,7 @@ spec:
     spec:
       containers:
         - name: $APP_NAME-madlibfeaturescacheloader
-          image: $MADLIBFLOW_DOCKER_REG/madlibflow/madlibfeaturescacheloader:1.0
+          image: $MADLIBFLOW_DOCKER_REG/madlibflow/madlibfeaturescacheloader:$RTSMADLIB_IMG_TAG
           imagePullPolicy: IfNotPresent
           env:
             - name: MADLIBFEATURESCACHE_APP_JSON

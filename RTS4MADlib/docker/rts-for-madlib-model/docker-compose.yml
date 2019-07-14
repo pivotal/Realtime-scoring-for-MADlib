@@ -21,7 +21,7 @@
 version: '3.3'
 services:
   rts-for-madlib-model:
-    image: $RTSMADLIB_DOCKER_REG/rts4madlib-model:1.0
+    image: $RTSMADLIB_DOCKER_REG/rts4madlib-model:$RTSMADLIB_IMG_TAG
     network_mode: bridge
     ports:
      - "8085-8185:8085"

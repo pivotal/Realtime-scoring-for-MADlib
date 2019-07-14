@@ -33,18 +33,25 @@ echo "setting up path ....................."
 
 if [ -f ~/.bash_profile ]
 then
+   echo "export # ********** RTS4MADLIB ************" >> ~/.bashrc
    echo "export RTSMADLIB_HOME=`pwd`" >> ~/.bash_profile
    echo "export RTSMADLIB_DOCKER_REG=$DOCKER_REPO" >> ~/.bash_profile
+   echo "export RTSMADLIB_IMG_TAG=$IMG_TAG" >> ~/.bash_profile
    echo 'export PATH=$PATH:$RTSMADLIB_HOME/bin' >> ~/.bash_profile
+   echo "export # *********************************" >> ~/.bashrc
    source ~/.bash_profile
 elif [-f ~/.bashrc ]
 then
+   echo "export # ********** RTS4MADLIB ************" >> ~/.bashrc
    echo "export RTSMADLIB_HOME=`pwd`" >> ~/.bashrc
    echo "export RTSMADLIB_DOCKER_REG=$DOCKER_REPO" >> ~/.bashrc
+   echo "export RTSMADLIB_IMG_TAG=$IMG_TAG" >> ~/.bash_profile
    echo 'export PATH=$PATH:$RTSMADLIB_HOME/bin' >> ~/.bashrc
+   echo "export # *********************************" >> ~/.bashrc
    source ~/.bashrc
 fi
 
 echo "RTSMADLIB_HOME=$RTSMADLIB_HOME"
 echo "RTSMADLIB_DOCKER_REG=$RTSMADLIB_DOCKER_REG"
+echo "RTSMADLIB_IMG_TAG=$RTSMADLIB_IMG_TAG"
 echo "Finished installing RTSMADlibClient!"

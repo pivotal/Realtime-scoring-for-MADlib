@@ -37,7 +37,7 @@ spec:
     spec:
       containers:
         - name: $APP_NAME-madlibfeaturesengine
-          image: $MADLIBFLOW_DOCKER_REG/madlibflow/madlibfeaturesengine:1.0
+          image: $MADLIBFLOW_DOCKER_REG/madlibflow/madlibfeaturesengine:$RTSMADLIB_IMG_TAG
           imagePullPolicy: IfNotPresent
           env:
             - name: MADLIBFEATURESENGINE_APP_JSON
