@@ -36,19 +36,26 @@ After successfully login to registry we will start the build process.
  - Build the rest of the project containers. This step build containers for MLModelflow, FeatureEngine, FeatureCacheManager and MLModelflow      Spring boot applications, and uploads them to specified docker registry. Apart from Docker containers this step also build the client deployment command line tool. All the jar files for Spring boot applications and a RT4MADlib client tool tar files will be copied on to $project_root/dist folder.
    ```
     $ cd $project_root/build 
-    $ ./build all $docker_repo 
+    $ ./build all -R docker_repo -T release_tag -P push_image
+    example;
+    ./build_all -R pivotaldata -T 1.2 -P yes
    ``` 
 
 If you wish to build individual containers then there are scripts available in $project_root/build folder. 
 For example;
  ``` 
      $ cd $project_root/build
-     $ ./build_mlmodelservice.sh $docker_repo
-     $ ./build_featurescachemanager.sh $docker_repo
-     $ ./build_featuresengine.sh $docker_repo
-     $ ./build_mlmodelflow.sh $docker_repo 
+     $ ./build_mlmodelservice.sh -R docker_repo -T release_tag -P push_image
+     $ ./build_featurescachemanager.sh -R docker_repo -T release_tag -P push_image
+     $ ./build_featuresengine.sh -R docker_repo -T release_tag -P push_image
+     $ ./build_mlmodelflow.sh -R docker_repo -T release_tag -P push_image 
   ``` 
-    
+# Build client tool 
+please run below steps. This will create the client tool to deploy models and move to dist folder.
+```
+$ $project_root/build
+$ ./build_rts4madlib.sh
+```
 # Installing client tool
 To install the RTS4MADlib tooling please run the build commands as mentioned in build section.
 After the build please follow below steps;
