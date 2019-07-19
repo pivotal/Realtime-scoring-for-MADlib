@@ -50,13 +50,13 @@ For example;
      $ ./build_featuresengine.sh -R docker_repo -T release_tag -P push_image
      $ ./build_mlmodelflow.sh -R docker_repo -T release_tag -P push_image 
   ``` 
-# Build client tool 
+## Build client tool 
 please run below steps. This will create the client tool to deploy models and move to dist folder.
 ```
 $ $project_root/build
 $ ./build_rts4madlib.sh
 ```
-# Installing client tool
+## Installing client tool
 To install the RTS4MADlib tooling please run the build commands as mentioned in build section.
 After the build please follow below steps;
 1. cp Realtime-scoring-for-MADlib/dist/rts4madlib.tar.gz ~/
@@ -81,6 +81,15 @@ rts4madlib --name unique_name --type type --action action --target target --inpu
 ------------------------------------------------------------------------------------------
 ```
 
+# Install RTS4MADlib client tool from Pre-built archives.
+We provide a prebuilt archive for convenience. Please download the relase from release tab from this git. Once you download please follow below instructions;
+```
+1. wget https://github.com/pivotal/Realtime-scoring-for-MADlib/releases/download/1.0/rts4madlib.tar.gz
+2. tar -zxvf rts4madlib.tar.gz -C ~/
+2. cd ~/RTS4MADlib
+3. ./setup ; 
+4. source ~/.bash_profile or ~/.bashrc 
+```
 Now we are ready to start deploying models.
 
 
