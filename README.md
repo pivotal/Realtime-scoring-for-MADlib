@@ -36,9 +36,9 @@ After successfully login to registry we will start the build process.
  - Build the rest of the project containers. This step build containers for MLModelflow, FeatureEngine, FeatureCacheManager and MLModelflow      Spring boot applications, and uploads them to specified docker registry. Apart from Docker containers this step also build the client deployment command line tool. All the jar files for Spring boot applications and a RT4MADlib client tool tar files will be copied on to $project_root/dist folder.
    ```
     $ cd $project_root/build 
-    $ ./build all -R docker_repo -T release_tag -P push_image
+    $ ./build all.sh -R docker_repo -T release_tag -P push_image
     example;
-    ./build_all -R pivotaldata -T 1.2 -P yes
+    ./build_all.sh -R pivotaldata -T 1.2 -P yes:
    ``` 
 
 If you wish to build individual containers then there are scripts available in $project_root/build folder. 
