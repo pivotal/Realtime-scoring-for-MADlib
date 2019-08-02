@@ -14,8 +14,10 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #----------------------------------------------------------------------------------------------
+
 # Author: Sridhar Paladugu 
 # Email: spaladugu@pivotal.io
+
 # Description: install the RTS4MADlib client tool and setup the environment variables
 
 echo "setting up path ....................."

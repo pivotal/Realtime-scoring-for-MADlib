@@ -57,7 +57,7 @@ public class ModelDbRepository {
 	 */
 	public List<Map<String, Object>> fetchFunctionDef() {
 		List<Map<String, Object>> restults = new ArrayList<Map<String, Object>>();
-		log.debug("querying source database funrtion definitions....");
+		log.debug("querying source database function definitions....");
 		for (String functionName : appProps.getFeatureFunctions()) {
 			String sqlQry = (functionFullMetaExtractQuery.replace("<FUNC_NAME>", functionName)).replace("<SCHEMA_NAME>",
 					appProps.getFeaturesSchema());

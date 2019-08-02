@@ -14,6 +14,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #----------------------------------------------------------------------------------------------
+
 # Author: Sridhar Paladugu 
 # Email: spaladugu@pivotal.io
 
@@ -87,9 +88,10 @@ cd ../MLModelflow && mvn clean install && \
 
 # build container and push to docker registry; if registry specified
 echo "${BCyan}Building Docker image for mlModelflow ........${NONE}"
+source_docker_repo=pivotaldata
 mkdir -p ../dist
 cd ../MLModelflow && \
-	docker build --build-arg docker_registry=$docker_repo --rm --tag rts4madlib-modelflow:$image_tag . && \
+	docker build --build-arg docker_registry=$source_docker_repo --rm --tag rts4madlib-modelflow:$image_tag . && \
 	cp ./target/MLModelflow-1.0.0-SNAPSHOT.jar ../dist && \
 	cd ../build
 if [ "$push_image" == "yes" ]

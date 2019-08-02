@@ -1,0 +1,83 @@
+logging:
+  level:
+    org.springframework: ERROR
+    io.pivotal: INFO
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    
+server:
+      port: 8088
+            
+spring:
+  application:
+    name:  Madlib micro-batch Application
+  
+  jpa:
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+   
+  datasource:
+    url: 
+    username: 
+    password: 
+    driverClassName: org.postgresql.Driver
+   
+  profiles:
+     active:
+     - redis
+---
+
+pcc:
+  locators: 
+  port: 1
+  username: 
+  password: 
+  
+---    
+gemfire:
+  locator: 
+  port: 1
+  username: 
+  password: 
+  server:
+  sport:
+ 
+---
+# Redis Standalone
+redis:
+  clustertype: 
+  hostname: 
+  port: 6379
+  password: 
+
+  master:
+  servers:
+  
+  
+---
+ml-batch:
+  name:  
+  schema: 
+  batchfunction: 
+  hydratecache: true
+  loadbatchsize: 500
+  cachesourcetables:  
+
+
+
+
+#ml-batch:
+#  name: test mico batch 
+#  schema: madlib_demo
+#  batchfunction: patient_prediction_batch
+#  hydratecache: true
+#  loadbatchsize: 500
+#  cachesourcetables:  
+#    patient_ha_predict : patient_id
+#    patient_ha_predict_prob : patient_id

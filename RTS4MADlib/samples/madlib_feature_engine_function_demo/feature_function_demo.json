@@ -1,0 +1,16 @@
+{
+    "spring.profiles.active": "nocache",
+    "modeldb-datasource.jdbc-url": "jdbc:postgresql://{DB_HOST}:{PORT}/{DATABASE}",
+    "modeldb-datasource.userName": "{USER}",
+    "modeldb-datasource.password": "{PASSWORD}",
+        "feature-engine.featurename": "categorize_users",
+        "feature-engine.featuredescription": "test feature function",
+        "feature-engine.featuresschema": "pseo",
+        "feature-engine.payloadtable": "message",
+        "feature-engine.featurequery": "select pseo.categorize_users_feature_driver()",
+        "feature-engine.featureFunctions": [
+                "categorize_users",
+                "categorize_users_feature_driver"
+        ],
+        "feature-engine.cacheenabled": "false"
+}

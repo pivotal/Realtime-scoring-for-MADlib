@@ -16,6 +16,8 @@
 #   limitations under the License.
 #----------------------------------------------------------------------------------------------
 
+
+
 # Author: Sridhar Paladugu 
 # Email: spaladugu@pivotal.io
 
@@ -92,6 +94,7 @@ fi
 ./build_mlmodelservice.sh -R $docker_repo -T $image_tag -P $push_image
 ./build_featurescachemanager.sh -R $docker_repo -T $image_tag -P $push_image
 ./build_featuresengine.sh -R $docker_repo -T $image_tag -P $push_image
+./build_mlmicrobatch.sh -R $docker_repo -T $image_tag -P $push_image
 ./build_mlmodelflow.sh -R $docker_repo -T $image_tag -P $push_image
 
 

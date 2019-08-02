@@ -79,10 +79,10 @@ cd ../FeaturesCacheManager && \
 
 # build container and push to docker registry if registry specified
 echo "${BCyan}Building Docker image featurescache_manager ........${NONE}"
-echo $docker_repo
+source_docker_repo=pivotaldata
 
 cd ../FeaturesCacheManager && \
-    docker build --build-arg docker_registry=$docker_repo \
+    docker build --build-arg docker_registry=$source_docker_repo \
      --rm --tag rts4madlib-featurescache:$image_tag . && \
     cd ../build
 

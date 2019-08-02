@@ -1,4 +1,5 @@
 #!/bin/sh
+
 #-----------------------------------------------------------------------------------------------
 #   Copyright 2019 Pivotal Software
 #
@@ -14,6 +15,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #----------------------------------------------------------------------------------------------
+
 # Author: Sridhar Paladugu 
 # Email: spaladugu@pivotal.io
 
@@ -87,8 +89,9 @@ cd ../MLModelService && \
 
 # build container and push to docker registry if registry specified
 echo "${BCyan}Building Docker image madlib-model ........${NONE}"
+source_docker_repo=pivotaldata
 cd ../MLModelService && \
- docker build --build-arg docker_registry=$docker_repo --rm --tag rts4madlib-model:$image_tag . && \
+ docker build --build-arg docker_registry=$source_docker_repo --rm --tag rts4madlib-model:$image_tag . && \
  cd ../build
 
 if [ "$push_image" == "yes" ]

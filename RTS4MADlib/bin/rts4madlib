@@ -14,6 +14,10 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #----------------------------------------------------------------------------------------------
+
+# Author: Sridhar Paladugu 
+# Email: spaladugu@pivotal.io
+
 import argparse
 import sys
 import os
@@ -53,8 +57,8 @@ def usage(msg):
     logging.info( "rts4madlib --name unique_name --type type --action action --target target --inputJson file")
     logging.info( " name -> module name")
     logging.info( " action -> deplopy|undeploy")
-    logging.info( " type -> flow|model|feature-engine|featurecache")
-    logging.info( " target -> docker|kubernetes|pks")
+    logging.info( " type -> flow|model|feature-engine|featurecache|batch")
+    logging.info( " target -> docker|kubernetes")
     logging.info( " inputJson -> path to input json for model **only if action is deploy**")
     logging.info("--------------------------------------------------------------------------------------------")
 
@@ -71,6 +75,8 @@ def parseModuleName(type):
         moduleName = "rts-for-madlib-featurescachemanager"
     elif type == 'flow':
         moduleName = "rts-for-madlib-mlmodelflow"
+    elif type == 'batch':
+        moduleName = "rts-for-madlib-microbatch"    
     else:
         usage("ERROR: type of module is not understood.")
         system.exit(-1)
@@ -151,8 +157,8 @@ def main():
     parser_1 = argparse.ArgumentParser()
     parser_1.add_argument("--name", help="unique name for module")
     parser_1.add_argument("--action", choices=['deploy', 'undeploy'])
-    parser_1.add_argument("--type", choices=['flow', 'model', 'feature-engine', 'featurecache'])
-    parser_1.add_argument("--target", choices=['docker', 'kubernetes', "pks"])
+    parser_1.add_argument("--type", choices=['flow', 'model', 'feature-engine', 'featurecache', 'batch'])
+    parser_1.add_argument("--target", choices=['docker', 'kubernetes'])
     parser_1.add_argument("--inputJson", nargs="?", help="input for corresponding module")
     arguments = parser_1.parse_args()
     if len(sys.argv)==1:

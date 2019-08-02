@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 #-----------------------------------------------------------------------------------------------
 #   Copyright 2019 Pivotal Software
 #
@@ -14,9 +15,12 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #----------------------------------------------------------------------------------------------
+
 # Author: Sridhar Paladugu 
 # Email: spaladugu@pivotal.io
+
 # Description: Build Base docker images for RTS4MADlib
+
 import os
 import sys
 import argparse

@@ -30,8 +30,8 @@ public interface PostgresCatalogQueries {
 			+ " FROM pg_catalog.pg_proc p\n" 
 			+ " LEFT JOIN pg_catalog.pg_namespace n ON n.oid = p.pronamespace\n"
 			+ " LEFT JOIN pg_catalog.pg_language l ON l.oid = p.prolang\n" 
-			+ " WHERE  n.nspname ~ '<SCHEMA_NAME>'"
-			+ " and p.proname ~ '^<FUNC_NAME>$'";
+			+ " WHERE  n.nspname ~ '(<SCHEMA_NAME>)$'"
+			+ " and p.proname ~ '^(<FUNC_NAME>)$'";
 	
 	public static String functionFullMetaExtractQuery = "SELECT n.nspname as \"Schema\"," + 
 			"  p.proname as \"Name\"," + 

@@ -91,9 +91,7 @@ public class MADlibFeaturesService {
 
 			}
 			// run the features query passed in manifest.
-			// We append trankey to uniquely identify features for this transaction.
-			fout = runFeaturesQuery(tranKey, schema);
-
+			fout = runFeaturesQuery(payloadTbl, schema);
 			// cleanup tables data
 			log.debug("Cleaning the schema for this transaction ......");
 			postgresRepository.runDDL("DROP SCHEMA " + schema + " CASCADE");

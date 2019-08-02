@@ -1,4 +1,5 @@
 #!/bin/sh
+
 #-----------------------------------------------------------------------------------------------
 #   Copyright 2019 Pivotal Software
 #
@@ -14,6 +15,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #----------------------------------------------------------------------------------------------
+
 # Author: Sridhar Paladugu 
 # Email: spaladugu@pivotal.io
 

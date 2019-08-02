@@ -14,6 +14,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #----------------------------------------------------------------------------------------------
+
 # Author: Sridhar Paladugu 
 # Email: spaladugu@pivotal.io
 
@@ -88,8 +89,9 @@ mkdir -p ../dist && cd ../FeatureEngine \
 # build container and push to docker registry if registry specified.
 #empty string is passed if no registry is specified.
 echo "${BCyan}Building Docker image FeatureEngine ........${NONE}"
+source_docker_repo=pivotaldata
 cd ../FeatureEngine && \
-  docker build --build-arg docker_registry=$docker_repo --rm --tag rts4madlib-featuresengine:$image_tag . && \
+  docker build --build-arg docker_registry=$source_docker_repo --rm --tag rts4madlib-featuresengine:$image_tag . && \
   cd ../build
 
 if [ "$push_image" == "yes" ]

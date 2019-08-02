@@ -1,30 +1,31 @@
 #!/usr/bin/env python
 
+"""
+Copyright 2019 Pivotal Software
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Author: Sridhar Paladugu 
+Email: spaladugu@pivotal.io
+Description: A deployment tool for MADlib ML models on Docker Engine.
+
+"""
 import subprocess
 import shlex
 import os
 import logging
 
 logging.basicConfig(format='%(message)s', level=logging.INFO)
-
-"""
-    Name: kubernetesdeploy.py
-    <developers>
-        <developer>
-            <id>spaladugu</id>
-            <name>Sridhar Paladugu</name>
-            <email>spaladugu@pivotal.io</email>
-            <organization>Pivotal Software, Inc.</organization>
-            <organizationUrl>https://pivotal.io/pivotal-greenplum</organizationUrl>
-            <roles>
-                <role>Machine Learning Data Engineer </role>
-                <role>RTS-For-MADlib Lead/Committer</role>
-            </roles>
-        </developer>
-    </developers>
-    Description: A deployment tool for MADlib ML models on Docker Engine.
-
-"""
 
 class Docker:
 
@@ -97,6 +98,8 @@ class Docker:
             uri.append(urlBase + '/features/load')
         elif moduleName == 'rts-for-madlib-mlmodelflow':
             uri.append(urlBase + '/predict')
+        elif moduleName == 'rts-for-madlib-microbatch':
+            uri.append(urlBase + '/batch/run')    
         else:
             uri.append('')    
         return uri
@@ -126,6 +129,9 @@ class Docker:
         elif moduleName == 'rts-for-madlib-mlmodelflow':
             uri = urlPrefix + '/predict'
             logging.info(" mlf uri => "+ uri)
+        elif moduleName == 'rts-for-madlib-microbatch':
+            uri = urlPrefix + '/batch/run'
+            logging.info(" mbatch uri => "+ uri)    
         else:
             uri=""
         return uri
