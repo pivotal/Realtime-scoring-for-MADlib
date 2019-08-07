@@ -103,6 +103,9 @@ Now we are ready to start deploying models.
    [Random Forest](https://github.com/pivotal/Realtime-scoring-for-MADlib/blob/master/RTS4MADlib/samples/Deploy_model_with_custom_resultset.md)
 #### Installing a MADlib model with Feature engine on minikube as REST service:  
 [Model and Feature Engine](https://github.com/pivotal/Realtime-scoring-for-MADlib/blob/master/RTS4MADlib/samples/Deploy_model_feature-engine_no_cache.md)
+
+#### Installing micro batch with Cache updates 
+[ML Batch] (https://github.com/pivotal/Realtime-scoring-for-MADlib/blob/master/RTS4MADlib/samples/Deploy_mlbatch.md)
 # License
 
 http://www.apache.org/licenses/LICENSE-2.0
