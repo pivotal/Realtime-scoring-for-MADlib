@@ -1,13 +1,13 @@
 
 {
   "spring.profiles.active": "redis",
-  "datasource.jdbc-url": "jdbc:postgresql://{HOST}:{PORT}/{DATABASE}",
-  "datasource.userName": "{USER}",
-  "datasource.password": "{PASSWORD}",
+  "spring.datasource.jdbc-url": "jdbc:postgresql://{HOST}:{PORT}/{DATABASE}",
+  "spring.datasource.userName": "{USER}",
+  "spring.datasource.password": "{PASSWORD}",
   "redis.clustertype": "standalone",
-  "redis.hostname": "localhost",
+  "redis.hostname": "{REDIST_HOST}",
   "redis.port": 6379,
-  "redis.password": "S8UgstCH8j6P5hQ4BQLz1wLuHSVUQYOpWJ+IZ3oiKuv8Eb6hf+TFUPMSXanhe28hT67jHbuqDiPpM7kC",
+  "redis.password": "{PASSWORD}",
   "mlbatch.name": "test mico batch",
   "mlbatch.schema": "madlib_demo",
   "mlbatch.batchFunction": "patient_prediction_batch",
