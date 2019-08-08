@@ -21,4 +21,4 @@
 # Description: define environment variables
 
 export DOCKER_REPO=pivotaldata
-export IMG_TAG=1.1
+export IMG_TAG=1.2

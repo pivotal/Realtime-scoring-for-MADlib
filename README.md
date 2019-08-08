@@ -71,14 +71,15 @@ after this please run rts4madlib and you should see below output.
 $ rts4madlib
 No arguments passed!
 Usage:->
-------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
 rts4madlib --name unique_name --type type --action action --target target --inputJson file
-    name -> module name
-    action -> deplopy|undeploy
-    type -> flow|model|featuresengine|featurecache
-    target -> docker|kubernetes|pks
-    inputJson -> path to input json for model **only if action is deploy**
-------------------------------------------------------------------------------------------
+name -> module name
+action -> deplopy|undeploy
+type -> flow|model|feature-engine|featurecache|batch
+target -> docker|kubernetes
+inputJson -> path to input json for model **only if action is deploy**
+--------------------------------------------------------------------------------------------
+
 ```
 
 # Install RTS4MADlib client tool from Pre-built archives.
@@ -105,7 +106,7 @@ Now we are ready to start deploying models.
 [Model and Feature Engine](https://github.com/pivotal/Realtime-scoring-for-MADlib/blob/master/RTS4MADlib/samples/Deploy_model_feature-engine_no_cache.md)
 
 #### Installing micro batch with Cache updates 
-[ML Batch] (https://github.com/pivotal/Realtime-scoring-for-MADlib/blob/master/RTS4MADlib/samples/Deploy_mlbatch.md)
+[ML Batch](https://github.com/pivotal/Realtime-scoring-for-MADlib/blob/master/RTS4MADlib/samples/Deploy_mlbatch.md)
 # License
 
 http://www.apache.org/licenses/LICENSE-2.0
