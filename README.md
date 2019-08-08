@@ -17,6 +17,7 @@ RT4MADlib is based on docker containers. The package contain below components;
 - FeatureEngine - Transformer for payload to featureset
 - FeatureCacheManager - An optional feature cache for lookup 
 - MLModelflow - An orchestrator component
+- MLBatch - A micro batch that runs on platform, used in delayed batch scoring scenarios.
 - DockerContainers - Base Docker image(s) with java, python, MADlib, Postgres
 - RTS4MADlib - A client application that deploys the ML pipeline to PKS or GKE, etc.
 
@@ -49,6 +50,7 @@ For example;
      $ ./build_featurescachemanager.sh -R docker_repo -T release_tag -P push_image
      $ ./build_featuresengine.sh -R docker_repo -T release_tag -P push_image
      $ ./build_mlmodelflow.sh -R docker_repo -T release_tag -P push_image 
+     $ ./build_mlmicrobatch.sh -R docker_repo -T release_tag -P push_image 
   ``` 
 ## Build client tool 
 please run below steps. This will create the client tool to deploy models and move to dist folder.
@@ -104,8 +106,7 @@ Now we are ready to start deploying models.
    [Random Forest](https://github.com/pivotal/Realtime-scoring-for-MADlib/blob/master/RTS4MADlib/samples/Deploy_model_with_custom_resultset.md)
 #### Installing a MADlib model with Feature engine on minikube as REST service:  
 [Model and Feature Engine](https://github.com/pivotal/Realtime-scoring-for-MADlib/blob/master/RTS4MADlib/samples/Deploy_model_feature-engine_no_cache.md)
-
-#### Installing micro batch with Cache updates 
+#### Installing micro batch with Cache updates:
 [ML Batch](https://github.com/pivotal/Realtime-scoring-for-MADlib/blob/master/RTS4MADlib/samples/Deploy_mlbatch.md)
 # License
 
