@@ -49,7 +49,7 @@ In this section we deploy the model developed on Greenplum to a Docker container
    
    Result:
    
-   [{"id":2,"class":"Play","estimated_prob_Don't Play":0.6,"estimated_prob_Play":0.4}]
+   [{"logregr_predict":true,"logregr_predict_prob":0.7202230289415197}]
  ``` 
  
  That's it, we successfully deployed MADlib model as REST end point.
