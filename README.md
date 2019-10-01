@@ -99,6 +99,7 @@ Now we are ready to start deploying models.
 # Usage
     RTS4MADlib let you deploy a MADlib Model to Docker, PKS or Kubernetes environments. 
     In $RTSMADLIB_HOME/samples/ folder we supply some samples to test the model deployment.
+    If you like to use Jupyter style samples, please navigate to folder $RTSMADLIB_HOME/samples/jupyter_notebooks/ where you find different samples.
 
 #### Installing a MADlib model on Docker as REST service:
    [Logistic Regression](https://github.com/pivotal/Realtime-scoring-for-MADlib/blob/master/RTS4MADlib/samples/Deploy_Model.md)
