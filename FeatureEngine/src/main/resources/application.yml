@@ -80,7 +80,8 @@ feature-engine:
     - 
   cacheenabled: false
   cacheentities:  
-    -
+    key1: value1
+    key2: value2
   
   
   

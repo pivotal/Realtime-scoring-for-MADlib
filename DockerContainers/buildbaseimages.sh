@@ -32,42 +32,43 @@ import subprocess
     Description: Build JDK11 and Postgres with plpython docker images
     usage: 
 """
-def buildJava11(registry):
+def buildJava11(registry, tag):
 	print "Building UBUNTU image  with JDK11........."
-	buildImgCommad='docker build -t  rts4madlib-jdk:1.0 '+os.getcwd()+'/java'
+	buildImgCommad='docker build -t  rts4madlib-jdk:' + tag + ' ' + os.getcwd()+'/java'
 	subprocess.call(shlex.split(buildImgCommad))
 	if registry is None:
 		print "No Docker registry is specified. Skipping the push operation!"
 	else:
-		print "pushing the image to docker registry "+ registry
-		tagCommand='docker tag rts4madlib-jdk:1.0 '+ registry+'/rts4madlib-jdk:1.0'
+		print "pushing the image to docker registry " + registry + " with tag: " + tag
+		tagCommand='docker tag rts4madlib-jdk:' + tag + ' '+ registry + '/rts4madlib-jdk:' + tag
 		subprocess.call(shlex.split(tagCommand))
-		pushCommand='docker push '+ registry +'/rts4madlib-jdk:1.0'
+		pushCommand='docker push '+ registry + '/rts4madlib-jdk:' + tag
 		subprocess.call(shlex.split(pushCommand))
-		cleanCommand='docker rmi -f rts4madlib-jdk:1.0 '+ registry+'/rts4madlib-jdk:1.0'
+		cleanCommand='docker rmi -f rts4madlib-jdk:' + tag + ' ' + registry+'/rts4madlib-jdk:'+tag
 		subprocess.call(shlex.split(cleanCommand))
 
-def buildMadlibbase(registry):
+def buildMadlibbase(registry, tag):
 	print "Building UBUNTU image with Postgres with plPython and JDK11........."
-	buildImgCommad='docker build -t rts4madlib-pgjava:1.0 '+os.getcwd()+'/MADlib'
+	buildImgCommad='docker build -t rts4madlib-pgjava:' + tag + ' ' + os.getcwd()+'/MADlib'
 	subprocess.call(shlex.split(buildImgCommad))
 	if registry is None:
 		print "No Docker registry is specified. Skipping the push operation!"
 	else:
-		print "pushing the image to docker registry"+ registry
-		tagCommand='docker tag rts4madlib-pgjava:1.0 '+ registry+'/rts4madlib-pgjava:1.0'
+		print "pushing the image to docker registry " + registry + " with tag: " + tag
+		tagCommand='docker tag rts4madlib-pgjava:' + tag + ' ' + registry+'/rts4madlib-pgjava:' + tag
 		subprocess.call(shlex.split(tagCommand))
-		pushCommand='docker push '+ registry +'/rts4madlib-pgjava:1.0'
+		pushCommand='docker push '+ registry +'/rts4madlib-pgjava:' + tag
 		subprocess.call(shlex.split(pushCommand))
-		cleanCommand='docker rmi -f rts4madlib-pgjava:1.0 '+ registry+'/rts4madlib-pgjava:1.0'
+		cleanCommand='docker rmi -f rts4madlib-pgjava:' + tag + ' ' +  registry+'/rts4madlib-pgjava:1.0'
 		subprocess.call(shlex.split(cleanCommand))
 
 def main():
 	parser = argparse.ArgumentParser()
 	parser.add_argument("--registry", nargs="?", help="docker registry for pushing images")
+	parser.add_argument("--tag", nargs="?", help="docker image version")
 	arguments = parser.parse_args()
-	buildJava11(arguments.registry)
-	buildMadlibbase(arguments.registry)
+	'buildJava11(arguments.registry, arguments.tag)'
+	buildMadlibbase(arguments.registry, arguments.tag)
 	print "Finished building base docker images!"
 
 if __name__ == "__main__":

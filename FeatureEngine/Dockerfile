@@ -17,13 +17,13 @@
 # Email: spaladugu@pivotal.io
 
 ARG docker_registry=
-
-FROM $docker_registry/rts4madlib-pgjava:1.0
+ARG base_image_tag=
+FROM $docker_registry/rts4madlib-pgjava:$base_image_tag
 
 USER root
-RUN wget -qq https://archive.apache.org/dist/madlib/1.15.1/apache-madlib-1.15.1-bin-Linux.deb -O apache-madlib-1.15.1-bin-Linux.deb
-RUN gdebi --n apache-madlib-1.15.1-bin-Linux.deb
-RUN rm -f apache-madlib-1.15.1-bin-Linux.deb
+RUN wget -qq https://archive.apache.org/dist/madlib/1.16/apache-madlib-1.16-bin-Linux.deb -O apache-madlib-1.16-bin-Linux.deb
+RUN gdebi --n apache-madlib-1.16-bin-Linux.deb
+RUN rm -f apache-madlib-1.16-bin-Linux.deb
 
 RUN mkdir -p /opt/pivotal/rts-for-madlib
 RUN chmod ugo+rwx /opt/pivotal/rts-for-madlib/
@@ -40,4 +40,4 @@ EXPOSE  8086
 USER postgres
 
 # Set the default command to run when starting the container
-CMD ["/usr/lib/postgresql/9.6/bin/postgres", "-D", "/var/lib/postgresql/9.6/main", "-c", "config_file=/etc/postgresql/9.6/main/postgresql.conf"]
+CMD ["/usr/lib/postgresql/10/bin/postgres", "-D", "/var/lib/postgresql/10/main", "-c", "config_file=/etc/postgresql/10/main/postgresql.conf"]

@@ -29,7 +29,7 @@ boldgreen='\033[1;32m'
 # ${BCyan}MADlibWorkflow${NONE}" 
 # This script perform below steps based on input parameters. "                          
 # 1) Run maven build MLModelflow.jar"
-# 2) Build MLModelflow docker image by using Dockerfile"
+# 2) Build MLModelflow docker image by using Dockerfile1"
 # 3) Publish MLModelflow image to docker repository if indicated"
 # "
 # The below command will perform all 3 steps ; #"
@@ -91,7 +91,7 @@ echo "${BCyan}Building Docker image for mlModelflow ........${NONE}"
 source_docker_repo=pivotaldata
 mkdir -p ../dist
 cd ../MLModelflow && \
-	docker build --build-arg docker_registry=$source_docker_repo --rm --tag rts4madlib-modelflow:$image_tag . && \
+	docker build --build-arg docker_registry=$source_docker_repo  --build-arg base_image_tag=$image_tag --rm --tag rts4madlib-modelflow:$image_tag . && \
 	cp ./target/MLModelflow-1.0.0-SNAPSHOT.jar ../dist && \
 	cd ../build
 if [ "$push_image" == "yes" ]

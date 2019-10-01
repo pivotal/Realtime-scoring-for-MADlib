@@ -82,7 +82,7 @@ echo "${BCyan}Building Docker image featurescache_manager ........${NONE}"
 source_docker_repo=pivotaldata
 
 cd ../FeaturesCacheManager && \
-    docker build --build-arg docker_registry=$source_docker_repo \
+    docker build --build-arg docker_registry=$source_docker_repo  --build-arg base_image_tag=$image_tag \
      --rm --tag rts4madlib-featurescache:$image_tag . && \
     cd ../build
 

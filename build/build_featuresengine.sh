@@ -29,7 +29,7 @@ boldgreen='\033[1;32m'
 # ------------------------------------------------------------------------------
 # This script perform below stpes based on input parameters. "                          
 # 1) Run maven build FeatureEngine.jar"
-# 2) Build FeatureEngine docker image by using Dockerfile"
+# 2) Build FeatureEngine docker image by using Dockerfile1"
 # 3) Publish FeatureEngine image to docker repository if indicated"
 # The below command will perform all steps"
 # $ ./build_featureengine.sh -repo pivotaldata -tag 1.0 -push yes"
@@ -91,7 +91,7 @@ mkdir -p ../dist && cd ../FeatureEngine \
 echo "${BCyan}Building Docker image FeatureEngine ........${NONE}"
 source_docker_repo=pivotaldata
 cd ../FeatureEngine && \
-  docker build --build-arg docker_registry=$source_docker_repo --rm --tag rts4madlib-featuresengine:$image_tag . && \
+  docker build --build-arg docker_registry=$source_docker_repo  --build-arg base_image_tag=$image_tag --rm --tag rts4madlib-featuresengine:$image_tag . && \
   cd ../build
 
 if [ "$push_image" == "yes" ]

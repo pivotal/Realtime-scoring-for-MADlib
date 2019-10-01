@@ -50,7 +50,7 @@ madlibrest:
   modelquery: 
   resultstable: 
   resultsquery:  
-  postgreshome: /usr/lib/postgresql/9.6/bin
+  postgreshome: /usr/lib/postgresql/10/bin
   workdir: /opt/pivotal/rts-for-madlib
 
 

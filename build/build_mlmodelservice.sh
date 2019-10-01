@@ -30,7 +30,7 @@ boldgreen='\033[1;32m'
 # ${BCyan}MLModelService${NONE}" 
 # This script perform below steps based on input parameter. "                          
 # 1) Run maven build MLModelService jar"
-# 2) Build madlib-model docker image by using Dockerfile"
+# 2) Build madlib-model docker image by using Dockerfile1"
 # 3) Publish madlib-model image to docker repository if registry specified"
 # # The below command will perform all 3 steps ; #"
 # # $ ./build_mlmodelservice.sh -R pivotaldata -T tag -P yes "
@@ -91,7 +91,7 @@ cd ../MLModelService && \
 echo "${BCyan}Building Docker image madlib-model ........${NONE}"
 source_docker_repo=pivotaldata
 cd ../MLModelService && \
- docker build --build-arg docker_registry=$source_docker_repo --rm --tag rts4madlib-model:$image_tag . && \
+ docker build --build-arg docker_registry=$source_docker_repo --build-arg base_image_tag=$image_tag --rm --tag rts4madlib-model:$image_tag . && \
  cd ../build
 
 if [ "$push_image" == "yes" ]

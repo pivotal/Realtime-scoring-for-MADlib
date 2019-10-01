@@ -14,8 +14,8 @@
 # the License.
 #-------------------------------------------------------------------------------
 ARG docker_registry=
-
-FROM $docker_registry/rts4madlib-jdk:1.0
+ARG base_image_tag=
+FROM $docker_registry/rts4madlib-jdk:$base_image_tag
 
 RUN mkdir -p /opt/pivotal/rts-for-madlib
 RUN chmod ugo+rwx /opt/pivotal/rts-for-madlib/

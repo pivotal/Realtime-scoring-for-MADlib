@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "./Generator.py", line 31, in <module>
+    import transactionGenerator as tg
+  File "/Users/sridharpaladugu/DEV/github/Realtime-scoring-for-MADlib/RTS4MADlib/samples/madlib-model_feature_cache_demo/CreditCardTransactionGenerator/transactionGenerator.py", line 36, in <module>
+    import redis
+ImportError: No module named redis

@@ -35,7 +35,7 @@ boldgreen='\033[1;32m'
 # ${BCyan}MLMicroBatch${NONE}" 
 # This script perform below steps based on input parameter. "                          
 # 1) Run maven build MLMicroBatch jar"
-# 2) Build MLMicroBatch docker image by using Dockerfile"
+# 2) Build MLMicroBatch docker image by using Dockerfile1"
 # 3) Publish MLMicroBatch image to docker repository if registry specified"
 # # The below command will perform all 3 steps ; #"
 # # $ ./build_mlmicrobatch.sh -R pivotaldata -T tag -P yes "
@@ -96,7 +96,7 @@ cd ../MLMicroBatch && \
 echo "${BCyan}Building Docker image ml_microbatch ........${NONE}"
 source_docker_repo=pivotaldata
 cd ../MLMicroBatch && \
- docker build --build-arg docker_registry=$source_docker_repo --rm --tag rts4madlib-microbatch:$image_tag . && \
+ docker build --build-arg docker_registry=$source_docker_repo  --build-arg base_image_tag=$image_tag --rm --tag rts4madlib-microbatch:$image_tag . && \
  cd ../build
 
 if [ "$push_image" == "yes" ]

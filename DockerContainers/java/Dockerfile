@@ -16,7 +16,7 @@
 # Author: Sridhar Paladugu 
 # Email: spaladugu@pivotal.io
 
-FROM ubuntu
+FROM ubuntu:16.04
 
 USER root
 
