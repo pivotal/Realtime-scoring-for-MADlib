@@ -22,27 +22,27 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    run: $APP_NAME-microbatch
-  name: $APP_NAME-microbatch
+    run: $APP_NAME-rts-for-madlib-microbatch
+  name: $APP_NAME-rts-for-madlib-microbatch
 spec:
   replicas: $REPLICAS
   selector:
     matchLabels:
-      run: $APP_NAME-microbatch-exposed
+      run: $APP_NAME-rts-for-madlib-microbatch-exposed
   template:
     metadata:
       labels:
-        run: $APP_NAME-microbatch-exposed
+        run: $APP_NAME-rts-for-madlib-microbatch-exposed
     spec:
       containers:
-        - name: $APP_NAME-microbatch
+        - name: $APP_NAME-rts-for-madlib-microbatch
           image:  $RTSMADLIB_DOCKER_REG/rts4madlib-microbatch:$RTSMADLIB_IMG_TAG
           imagePullPolicy: IfNotPresent
           env:
             - name: madlibflow_APP_JSON
               valueFrom:
                 configMapKeyRef:
-                  name: $APP_NAME-microbatch-config
+                  name: $APP_NAME-rts-for-madlib-microbatch-config
                   key: springjson
           lifecycle:
             postStart:
@@ -61,8 +61,8 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    run: $APP_NAME-microbatch
-  name: $APP_NAME-microbatch
+    run: $APP_NAME-rts-for-madlib-microbatch
+  name: $APP_NAME-rts-for-madlib-microbatch
 spec:
   type: LoadBalancer
   ports:
@@ -71,4 +71,4 @@ spec:
     port: 8088
     targetPort: 8088
   selector:
-    run: $APP_NAME-microbatch-exposed
+    run: $APP_NAME-rts-for-madlib-microbatch-exposed
