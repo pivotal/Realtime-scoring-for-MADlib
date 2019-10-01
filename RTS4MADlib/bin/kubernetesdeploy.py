@@ -108,12 +108,14 @@ class Kubernetes:
         newTemplateFileData1 = templateFileData.replace('$APP_NAME', appName)
         madlibflowDockerReg = os.environ.get('RTSMADLIB_DOCKER_REG')
         newTemplateFileData2 = newTemplateFileData1.replace('$RTSMADLIB_DOCKER_REG', madlibflowDockerReg)
+        madlibflowDockerTag = os.environ.get('RTSMADLIB_IMG_TAG')
+        newTemplateFileData3 = newTemplateFileData2.replace('$RTSMADLIB_IMG_TAG', madlibflowDockerTag)
         if moduleName == "madlibrest" :
-            newTemplateFileData = newTemplateFileData2.replace('$REPLICAS', "2")
+            newTemplateFileData = newTemplateFileData3.replace('$REPLICAS', "2")
         elif moduleName == "madlibfeaturesengine" :
-            newTemplateFileData = newTemplateFileData2.replace('$REPLICAS', "2")
+            newTemplateFileData = newTemplateFileData3.replace('$REPLICAS', "2")
         else :
-            newTemplateFileData = newTemplateFileData2.replace('$REPLICAS', "1")
+            newTemplateFileData = newTemplateFileData3.replace('$REPLICAS', "1")
 
           # Write the file out again
 

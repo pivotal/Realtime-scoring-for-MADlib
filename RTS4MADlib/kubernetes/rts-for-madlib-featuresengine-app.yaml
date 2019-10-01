@@ -22,27 +22,27 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    run: $APP_NAME-madlibfeaturesengine
-  name: $APP_NAME-madlibfeaturesengine
+    run: $APP_NAME-rts-for-madlib-featuresengine
+  name: $APP_NAME-rts-for-madlib-featuresengine
 spec:
   replicas: $REPLICAS
   selector:
     matchLabels:
-      run: $APP_NAME-madlibfeaturesengine-exposed
+      run: $APP_NAME-rts-for-madlib-featuresengine-exposed
   template:
     metadata:
       labels:
-        run: $APP_NAME-madlibfeaturesengine-exposed
+        run: $APP_NAME-rts-for-madlib-featuresengine-exposed
     spec:
       containers:
-        - name: $APP_NAME-madlibfeaturesengine
-          image: $MADLIBFLOW_DOCKER_REG/madlibflow/madlibfeaturesengine:$RTSMADLIB_IMG_TAG
+        - name: $APP_NAME-rts-for-madlib-featuresengine
+          image: $RTSMADLIB_DOCKER_REG/rts4madlib-featuresengine:$RTSMADLIB_IMG_TAG
           imagePullPolicy: IfNotPresent
           env:
             - name: MADLIBFEATURESENGINE_APP_JSON
               valueFrom:
                 configMapKeyRef:
-                  name: $APP_NAME-madlibfeaturesengine-config
+                  name: $APP_NAME-rts-for-madlib-featuresengine-config
                   key: springjson
           lifecycle:
             postStart:
@@ -61,8 +61,8 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    run: $APP_NAME-madlibfeaturesengine
-  name: $APP_NAME-madlibfeaturesengine
+    run: $APP_NAME-rts-for-madlib-featuresengine
+  name: $APP_NAME-rts-for-madlib-featuresengine
 spec:
   type: LoadBalancer
   ports:
@@ -71,4 +71,4 @@ spec:
     port: 8086
     targetPort: 8086
   selector:
-    run: $APP_NAME-madlibfeaturesengine-exposed
+    run: $APP_NAME-rts-for-madlib-featuresengine-exposed

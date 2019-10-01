@@ -64,7 +64,7 @@ generator:
   transactionNumber: 100000
   FraudEveryNTransactions: 100
   storeFraudFlag: True
-  sleepBetweenIterations: 10
+  sleepBetweenIterations: 0
   sleepBetweenFiles: 0
 
 constraints:

@@ -27,7 +27,6 @@ import json
 import shlex
 from dockerdeploy import Docker
 from kubernetesdeploy import Kubernetes
-from pksdeploy  import Pks
 import logging
 
 """
@@ -64,7 +63,6 @@ def usage(msg):
 
 docker = Docker()
 kubernetes = Kubernetes()
-pks = Pks()
 
 def parseModuleName(type):
     if type == 'model':

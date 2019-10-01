@@ -22,27 +22,27 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    run: $APP_NAME-madlibflow
-  name: $APP_NAME-madlibflow
+    run: $APP_NAME-rts-for-madlib-mlmodelflow
+  name: $APP_NAME-rts-for-madlib-mlmodelflow
 spec:
   replicas: $REPLICAS
   selector:
     matchLabels:
-      run: $APP_NAME-madlibflow-exposed
+      run: $APP_NAME-rts-for-madlib-mlmodelflow-exposed
   template:
     metadata:
       labels:
-        run: $APP_NAME-madlibflow-exposed
+        run: $APP_NAME-rts-for-madlib-mlmodelflow-exposed
     spec:
       containers:
-        - name: $APP_NAME-madlibflow
+        - name: $APP_NAME-rts-for-madlib-mlmodelflow
           image:  $RTSMADLIB_DOCKER_REG/rts4madlib-modelflow:$RTSMADLIB_IMG_TAG
           imagePullPolicy: IfNotPresent
           env:
             - name: madlibflow_APP_JSON
               valueFrom:
                 configMapKeyRef:
-                  name: $APP_NAME-madlibflow-config
+                  name: $APP_NAME-rts-for-madlib-mlmodelflow-config
                   key: springjson
           lifecycle:
             postStart:
@@ -61,8 +61,8 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    run: $APP_NAME-madlibflow
-  name: $APP_NAME-madlibflow
+    run: $APP_NAME-rts-for-madlib-mlmodelflow
+  name: $APP_NAME-rts-for-madlib-mlmodelflow
 spec:
   type: LoadBalancer
   ports:
@@ -71,4 +71,4 @@ spec:
     port: 8089
     targetPort: 8089
   selector:
-    run: $APP_NAME-madlibflow-exposed
+    run: $APP_NAME-rts-for-madlib-mlmodelflow-exposed

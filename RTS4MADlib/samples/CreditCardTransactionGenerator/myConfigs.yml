@@ -1,0 +1,71 @@
+#-------------------------------------------------------------------------------
+# Copyright 2019 Pivotal Software Inc
+# 
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not
+# use this file except in compliance with the License.  You may obtain a copy
+# of the License at
+# 
+#   http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
+# License for the specific language governing permissions and limitations under
+# the License.
+#-------------------------------------------------------------------------------
+###############################################
+#
+#  Credit Card Transaction Generator Configs
+#
+###############################################
+
+#target:
+#  type: "kafka"
+#  kafka: "localhost:9092"
+#  topic: "credit_transactions"
+
+target:
+  type: "csv"
+  transactionPerFile: 10000
+  # Location to create
+  transactionsFileLoctation: "data/"
+
+redis:
+  host: localhost
+  port: 6379
+  passwd: S8UgstCH8j6P5hQ4BQLz1wLuHSVUQYOpWJ+IZ3oiKuv8Eb6hf+TFUPMSXanhe28hT67jHbuqDiPpM7kC
+
+configs:
+  # accounts.json
+  createAccountsJson: False
+  # locations.json
+  createLocationsJson: False
+
+data:
+  # Requires columns:
+  #   Name|trxn_mean|trx_std|sun_open|sun_close|mon_open|mon_close|tue_open|tue_close|wed_open|wed_close|thu_open|thu_close|fri_open|fri_close|sat_open|sat_close
+  retailers: "data/us_retailers.csv"
+  # Requires columns:
+  #   City|State short|City alias|Latitude|Longitude
+  locations: "data/ga_fl_sc_nc_al_locations.csv"
+
+generator:
+  # accounts.json
+  accountsNumber: 1000
+  minTransactionAmountTarget: 10
+  maxTransactionAmountTarget: 1000
+  minTransactionRadiusTarget: 1
+  maxTransactionRadiusTarget: 40
+
+  # locations.json
+  merchantsNumber: 1000
+
+  # transactions
+  transactionNumber: 100000
+  FraudEveryNTransactions: 5
+  storeFraudFlag: True
+  sleepBetweenIterations: 0
+  sleepBetweenFiles: 0
+
+constraints:
+  states: ["GA","FL"]
