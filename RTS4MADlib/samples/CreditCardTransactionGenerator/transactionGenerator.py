@@ -291,13 +291,13 @@ def generate_kafka_data(myConfigs):
         if msg == False:
             iter_counter -= 1
         else:
-	    logging.debug(msg)
-	    logging.debug(json.dumps(msg).encode('utf-8'))
+            logging.debug(msg)
+            logging.debug(json.dumps(msg).encode('utf-8'))
             producer.flush()
             producer.send(topic, json.dumps(msg).encode('utf-8'))
-	    redis_db.incr("TransactionsCount")
-        if(iter_counter % batch ==0):
-            time.sleep(sleepBetweenIterations)
+            redis_db.incr("TransactionsCount")
+            if(iter_counter % batch ==0):
+                time.sleep(sleepBetweenIterations)
 
 def generate_file_data(myConfigs):
     
