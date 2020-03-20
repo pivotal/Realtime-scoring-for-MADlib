@@ -87,7 +87,7 @@ inputJson -> path to input json for model **only if action is deploy**
 # Install RTS4MADlib client tool from Pre-built archives.
 We provide a prebuilt archive for convenience. Please download the relase from release tab from this git. Once you download please follow below instructions;
 ```
-1. wget https://github.com/pivotal/Realtime-scoring-for-MADlib/releases/download/1.0/rts4madlib.tar.gz
+1. wget https://github.com/pivotal/Realtime-scoring-for-MADlib/releases/download/1.5/rts4madlib.tar.gz
 2. tar -zxvf rts4madlib.tar.gz -C ~/
 2. cd ~/RTS4MADlib
 3. ./setup ; 
