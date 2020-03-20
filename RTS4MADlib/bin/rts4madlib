@@ -67,6 +67,8 @@ kubernetes = Kubernetes()
 def parseModuleName(type):
     if type == 'model':
         moduleName = "rts-for-madlib-model"
+    elif type == 'plpymodel':
+        moduleName = "rts-for-plpy"    
     elif type == 'feature-engine':
         moduleName = "rts-for-madlib-featuresengine"
     elif type == 'featurecache':
@@ -155,7 +157,7 @@ def main():
     parser_1 = argparse.ArgumentParser()
     parser_1.add_argument("--name", help="unique name for module")
     parser_1.add_argument("--action", choices=['deploy', 'undeploy'])
-    parser_1.add_argument("--type", choices=['flow', 'model', 'feature-engine', 'featurecache', 'batch'])
+    parser_1.add_argument("--type", choices=['flow', 'model', 'plpymodel', 'feature-engine', 'featurecache', 'batch'])
     parser_1.add_argument("--target", choices=['docker', 'kubernetes'])
     parser_1.add_argument("--inputJson", nargs="?", help="input for corresponding module")
     arguments = parser_1.parse_args()

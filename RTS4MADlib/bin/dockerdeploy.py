@@ -24,7 +24,8 @@ import subprocess
 import shlex
 import os
 import logging
-
+import json
+from pathlib import Path
 logging.basicConfig(format='%(message)s', level=logging.INFO)
 
 class Docker:
@@ -35,6 +36,7 @@ class Docker:
         appName,
         inputJsoni,
         ):
+        input_json_dict = json.loads(inputJsoni)
         inputJson = inputJsoni.replace("\'", "'\\''")
         rtsMADlibHome = os.environ.get('RTSMADLIB_HOME')
         folder = rtsMADlibHome + '/docker/' + moduleName
@@ -43,13 +45,24 @@ class Docker:
             + '/docker-compose.yml up -d --build --quiet-pull'
         logging.info(cmd1)
         subprocess.check_call(shlex.split(cmd1))
-
-        logging.info('Running post container script in '
-                     + containerName + ' ..........')
-        cmd2 = 'docker exec -d ' + containerName \
+        if (moduleName == "rts-for-plpy"):
+            pydepsFile = input_json_dict['plpyrest.pydepsfile']
+            logging.info("pydepsFile-> "+ pydepsFile)
+            pymodelFile = input_json_dict['plpyrest.modelcode']
+            logging.info("pymodelFile-> "+ pymodelFile)
+            if (Path(pydepsFile)).is_file():
+                cpcmd1 = ' docker cp ' + pydepsFile + ' ' + containerName+':/opt/pivotal/plpy-model/'
+                subprocess.check_call(shlex.split(cpcmd1))
+            if (Path(pymodelFile)).is_file():
+                cpcmd2 = ' docker cp ' + pymodelFile + ' ' + containerName+':/opt/pivotal/plpy-model/'
+                subprocess.check_call(shlex.split(cpcmd2))
+        
+        logging.info('Running post container script in '+ containerName + ' ..........')
+        postContainerCmd = 'docker exec -d ' + containerName \
             + " /bin/sh /docker-entrypoint-initdb.d/init_container_docker.sh \'" \
             + inputJson + "\'"
-        subprocess.check_call(shlex.split(cmd2))
+        subprocess.check_call(shlex.split(postContainerCmd))
+            
         logging.info('Finished the provisioning the ' + moduleName
                      + '  container! ')
         uris = self.getServiceUrls(moduleName, appName)
@@ -58,6 +71,8 @@ class Docker:
             logging.info(url)
         return uris
 
+        
+        
     def undeploy(self, moduleName, appName):
         name = appName + '_' + moduleName + '_1'
         logging.info('un-deploying container ' + name)

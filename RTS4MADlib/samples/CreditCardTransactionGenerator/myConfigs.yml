@@ -33,7 +33,7 @@ target:
 redis:
   host: localhost
   port: 6379
-  passwd: S8UgstCH8j6P5hQ4BQLz1wLuHSVUQYOpWJ+IZ3oiKuv8Eb6hf+TFUPMSXanhe28hT67jHbuqDiPpM7kC
+  passwd: 
 
 configs:
   # accounts.json

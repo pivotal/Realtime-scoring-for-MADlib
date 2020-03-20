@@ -27,7 +27,7 @@ RUN mkdir /docker-entrypoint-initdb.d
 ADD ./src/main/resources/init_container.sh /docker-entrypoint-initdb.d/
 ADD ./src/main/resources/init_container_docker.sh /docker-entrypoint-initdb.d/
 
-EXPOSE 8087
+EXPOSE 8088
 
 WORKDIR /opt/pivotal/rts-for-madlib
 

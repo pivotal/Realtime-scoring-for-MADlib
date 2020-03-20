@@ -55,5 +55,6 @@ public class MADlibFeaturesServiceInformation implements InfoContributor {
 			m.put("Cache Provider", env.getActiveProfiles());
 			m.put("Cache Entities:", props.getCacheEntities());
 		}
+		builder.withDetails(m);
 	}
 }

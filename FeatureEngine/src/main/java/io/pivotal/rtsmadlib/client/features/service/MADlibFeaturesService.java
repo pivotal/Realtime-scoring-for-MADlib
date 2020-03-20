@@ -134,24 +134,26 @@ public class MADlibFeaturesService {
 		for (String entity : appProps.getCacheEntities().keySet()) {
 			String id = appProps.getCacheEntities().get(entity);
 			log.info("entity =" + entity + ", Key = " + id);
-			Object o = payload.get(id);
-			MADlibFeatureKey key = new MADlibFeatureKey(entity, payload.get(id).toString());
-			MADlibFeature feature = cacheLoader.lookUpFeature(key);
-			if (feature == null) {
-				throw new RuntimeException(" No cache found for key " + key.toString());
-			}
-			// convert features to a db table
-			StringBuffer sb1 = new StringBuffer();
-			sb1.append("CREATE TABLE IF NOT EXISTS ").append(schema).append(".").append(entity).append("( ");
-			processPayloadForDDL(feature.getFeatureValues(), sb1);
-			sb1.append(" ) ");
-			postgresRepository.runDDL(sb1.toString());
+			if (entity != null && !entity.equalsIgnoreCase("none")) {
+				Object o = payload.get(id);
+				MADlibFeatureKey key = new MADlibFeatureKey(entity, payload.get(id).toString());
+				MADlibFeature feature = cacheLoader.lookUpFeature(key);
+				if (feature == null) {
+					throw new RuntimeException(" No cache found for key " + key.toString());
+				}
+				// convert features to a db table
+				StringBuffer sb1 = new StringBuffer();
+				sb1.append("CREATE TABLE IF NOT EXISTS ").append(schema).append(".").append(entity).append("( ");
+				processPayloadForDDL(feature.getFeatureValues(), sb1);
+				sb1.append(" ) ");
+				postgresRepository.runDDL(sb1.toString());
 
-			// insert data to payload table
-			SimpleJdbcInsert fsimpleJdbcInsert = postgresRepository.jdbcInsert(entity).withSchemaName(schema);
-			Map<String, Object> fparameters = new HashMap<String, Object>();
-			processPayloadForInsert(feature.getFeatureValues(), fparameters);
-			fsimpleJdbcInsert.execute(fparameters);
+				// insert data to payload table
+				SimpleJdbcInsert fsimpleJdbcInsert = postgresRepository.jdbcInsert(entity).withSchemaName(schema);
+				Map<String, Object> fparameters = new HashMap<String, Object>();
+				processPayloadForInsert(feature.getFeatureValues(), fparameters);
+				fsimpleJdbcInsert.execute(fparameters);
+			}
 		}
 	}
 

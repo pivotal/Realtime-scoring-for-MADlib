@@ -56,7 +56,7 @@ public class MADlibRESTServiceApplication implements CommandLineRunner {
 		log.debug("Boot strapping the local postgres madlib model tables greenplum .......");
 		exportImplortRepository.performExportImportModel();
 		containerDbRespository.fetchActorTableMetada();
-		log.debug("Finished local postgres madlib model tables .......");
-		log.debug("Container is ready for requests........");
+		log.debug("Finished importing madlib model artifacts to container!");
+		log.debug("Container is ready for requests!");
 	}
 }
