@@ -103,14 +103,17 @@ Now we are ready to start deploying models.
 
 #### Installing a MADlib model on Docker as REST service:
    [Logistic Regression](https://github.com/pivotal/Realtime-scoring-for-MADlib/blob/master/RTS4MADlib/samples/Deploy_Model.md)
+   
    [Logical Regression - Jupyter notebook](https://github.com/pivotal/Realtime-scoring-for-MADlib/blob/master/RTS4MADlib/samples/jupyter_notebooks/Random_forest_classifier_model_deployment_kubernetes.ipynb)
 	
 #### Installing a MADlib model with multiple model tables on Docker as REST service:   
    [Random Forest](https://github.com/pivotal/Realtime-scoring-for-MADlib/blob/master/RTS4MADlib/samples/Deploy_model_with_custom_resultset.md)
+   
    [Random Forest - Jupyter notebook](https://github.com/pivotal/Realtime-scoring-for-MADlib/blob/master/RTS4MADlib/samples/jupyter_notebooks/Random_forest_classifier_model_deployment_kubernetes.ipynb)
 
 #### Installing a MADlib model with Feature engine on minikube as REST service:  
 [Model and Feature Engine](https://github.com/pivotal/Realtime-scoring-for-MADlib/blob/master/RTS4MADlib/samples/Deploy_model_feature-engine_no_cache.md)
+
 [Creedit Application - Jupyter notebook](https://github.com/pivotal/Realtime-scoring-for-MADlib/blob/master/RTS4MADlib/samples/jupyter_notebooks/CreditApplication_model_deploy_kubernetes.ipynb)
 
 #### Installing micro batch with Cache updates:
