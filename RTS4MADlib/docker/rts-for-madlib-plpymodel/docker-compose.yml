@@ -13,33 +13,14 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 #----------------------------------------------------------------------------------------------
-
-# Author: Sridhar Paladugu
+# Author: Sridhar Paladugu 
 # Email: spaladugu@pivotal.io
-
-
-#!/bin/bash
-
-# This script require the client install program supply a text file mlpypackes.txt
-# with each line with a pip package name.
-
-exec > /opt/pivotal/plpy-model/init_container.out 2>&1
-
-set -x
-
-printf "\n Required Python packages for model as per mlpypackes.txt:\n"
-pinput="pymodules_list.txt"
-while IFS= read -r line
-do
-  printf "\n $line"
-done < "$pinput"
-
-printf "\nInstalling required packages .......\n"
-input="pymodules_list.txt"
-while IFS= read -r line
-do
-  printf "\nInstalling $line ............"
-  sudo pip3 install $line
-done < "$input"
-
-printf "\nFinished with init_pyenv.sh script!.\n"
+# Description: PlPython model Docker file
+version: '3.3'
+services:
+  rts-for-plpy:
+    image: $RTSMADLIB_DOCKER_REG/rts4madlib-plpymodel:$RTSMADLIB_IMG_TAG
+    network_mode: bridge
+    ports:
+     - "8587-8687:8090"
+     - "25432:5432"

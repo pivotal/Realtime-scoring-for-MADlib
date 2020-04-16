@@ -45,23 +45,19 @@ class Docker:
             + '/docker-compose.yml up -d --build --quiet-pull'
         logging.info(cmd1)
         subprocess.check_call(shlex.split(cmd1))
-        if (moduleName == "rts-for-plpy"):
-            pydepsFile = input_json_dict['plpyrest.pydepsfile']
-            logging.info("pydepsFile-> "+ pydepsFile)
-            pymodelFile = input_json_dict['plpyrest.modelcode']
-            logging.info("pymodelFile-> "+ pymodelFile)
-            if (Path(pydepsFile)).is_file():
-                cpcmd1 = ' docker cp ' + pydepsFile + ' ' + containerName+':/opt/pivotal/plpy-model/'
-                subprocess.check_call(shlex.split(cpcmd1))
-            if (Path(pymodelFile)).is_file():
-                cpcmd2 = ' docker cp ' + pymodelFile + ' ' + containerName+':/opt/pivotal/plpy-model/'
-                subprocess.check_call(shlex.split(cpcmd2))
-        
-        logging.info('Running post container script in '+ containerName + ' ..........')
-        postContainerCmd = 'docker exec -d ' + containerName \
+        if (moduleName == "rts-for-madlib-plpymodel"):
+            pydeps = input_json_dict['plpyrest.pydeps']
+            logging.info("python modules needed for model -> "+ pydeps)
+            logging.info('Running post container script in '+ containerName + ' ..........')
+            postContainerCmd = 'docker exec -d ' + containerName \
             + " /bin/sh /docker-entrypoint-initdb.d/init_container_docker.sh \'" \
-            + inputJson + "\'"
-        subprocess.check_call(shlex.split(postContainerCmd))
+            + inputJson + "\' " + pydeps
+        else:    
+            logging.info('Running post container script in '+ containerName + ' ..........')
+            postContainerCmd = 'docker exec -d ' + containerName \
+                + " /bin/sh /docker-entrypoint-initdb.d/init_container_docker.sh \'" \
+                + inputJson + "\' "
+        subprocess.check_call(shlex.split(postContainerCmd), timeout=None)
             
         logging.info('Finished the provisioning the ' + moduleName
                      + '  container! ')

@@ -56,7 +56,7 @@ public class ContainerDbRepository {
 	static {
 		
 		typeMaps.put("int4", "java.lang.Integer");
-		typeMaps.put("int8", "java.lang.Integer");
+		typeMaps.put("int8", "java.lang.Long");
 		typeMaps.put("text", "java.lang.String");
 		typeMaps.put("float8", "java.lang.Double");
 		typeMaps.put("bool", "java.lang.Boolean");
@@ -160,7 +160,7 @@ public class ContainerDbRepository {
 	 * 2. Insert payload to the new actor table 
 	 * 3. String replacement of actor table in action query. 
 	 * 4. String replacement of results table in results query(if provided) 
-	 * 5. String replacement of results table if provided. 
+	 * 5. String replacement of results table if provided. ø
 	 * 6. Cleanup all the resources after the execution.
 	 * 
 	 * @param payload

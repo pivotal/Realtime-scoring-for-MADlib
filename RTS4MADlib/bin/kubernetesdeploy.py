@@ -24,7 +24,7 @@ import shlex
 import time
 import os
 import logging
-
+import json
 logging.basicConfig(format='%(message)s', level=logging.DEBUG)
 
 class Kubernetes:
@@ -46,8 +46,11 @@ class Kubernetes:
         logging.info('Deploying ' + podName
                      + ' container to kubernetes ..........')
         self.cleanupConfig(podName)
-        self.createPodConfigMap(podName, inputJson)
-        self.createPodSpec(appName, moduleName, podName)
+        if (moduleName == "rts-for-madlib-plpymodel"):
+            self.createPodConfigMap(podName, inputJson, True)
+        else:
+            self.createPodConfigMap(podName, inputJson, False)
+        self.createPodSpec(appName, moduleName, podName)    
         self.provisionPOD(podName)
         self.pollForPodStart(podName)
         self.getPODInformation(podName)
@@ -82,11 +85,20 @@ class Kubernetes:
             logging.info('No existing configuration found. Continuing....'
                          )
 
-    def createPodConfigMap(self, podName, inputJson):
+    def createPodConfigMap(self, podName, inputJson, isPyModel):
         configInput = inputJson.replace('"', '"').replace("\'", "'\\''")
-        createConfigCmd = 'kubectl create configmap ' + podName \
-            + "-config --from-literal=podname='" + podName \
-            + "' --from-literal=springjson=\'" + configInput + "\'"
+        if (isPyModel == True):
+           input_json_dict = json.loads(inputJson)
+           pydeps = input_json_dict['plpyrest.pydeps']
+           createConfigCmd = 'kubectl create configmap ' + podName \
+            + "-config --from-literal=podname='" + podName +"\'" \
+            + " --from-literal=springjson=\'" + configInput + "\'" \
+            + " --from-literal=pydeps=\'" +  pydeps + "\'"
+        else:
+            createConfigCmd = 'kubectl create configmap ' + podName \
+            + "-config --from-literal=podname='" + podName +"\'" \
+            + " --from-literal=springjson=\'" + configInput + "\'" 
+            
         logging.info('creating new service configuration.....')
         subprocess.check_call(shlex.split(createConfigCmd))
 

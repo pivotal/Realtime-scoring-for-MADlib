@@ -56,7 +56,7 @@ def usage(msg):
     logging.info( "rts4madlib --name unique_name --type type --action action --target target --inputJson file")
     logging.info( " name -> module name")
     logging.info( " action -> deplopy|undeploy")
-    logging.info( " type -> flow|model|feature-engine|featurecache|batch")
+    logging.info( " type -> flow|madlib-model|plpy-model|feature-engine|featurecache|batch")
     logging.info( " target -> docker|kubernetes")
     logging.info( " inputJson -> path to input json for model **only if action is deploy**")
     logging.info("--------------------------------------------------------------------------------------------")
@@ -65,10 +65,10 @@ docker = Docker()
 kubernetes = Kubernetes()
 
 def parseModuleName(type):
-    if type == 'model':
+    if type == 'madlib-model':
         moduleName = "rts-for-madlib-model"
-    elif type == 'plpymodel':
-        moduleName = "rts-for-plpy"    
+    elif type == 'plpy-model':
+        moduleName = "rts-for-madlib-plpymodel"    
     elif type == 'feature-engine':
         moduleName = "rts-for-madlib-featuresengine"
     elif type == 'featurecache':
@@ -157,7 +157,7 @@ def main():
     parser_1 = argparse.ArgumentParser()
     parser_1.add_argument("--name", help="unique name for module")
     parser_1.add_argument("--action", choices=['deploy', 'undeploy'])
-    parser_1.add_argument("--type", choices=['flow', 'model', 'plpymodel', 'feature-engine', 'featurecache', 'batch'])
+    parser_1.add_argument("--type", choices=['flow', 'madlib-model', 'plpy-model', 'feature-engine', 'featurecache', 'batch'])
     parser_1.add_argument("--target", choices=['docker', 'kubernetes'])
     parser_1.add_argument("--inputJson", nargs="?", help="input for corresponding module")
     arguments = parser_1.parse_args()

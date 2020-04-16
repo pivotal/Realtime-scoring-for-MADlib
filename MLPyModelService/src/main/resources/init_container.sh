@@ -16,31 +16,35 @@
 
 # Author: Sridhar Paladugu
 # Email: spaladugu@pivotal.io
-
-
 #!/bin/bash
-
-# This script require the client install program supply a text file mlpypackes.txt
-# with each line with a pip package name.
 
 exec > /opt/pivotal/plpy-model/init_container.out 2>&1
 
 set -x
 
-printf "\n Required Python packages for model as per mlpypackes.txt:\n"
-
-pinput="pymodules_list.txt"
-while IFS= read -r line
+echo " Required Python packages for model->"
+pydeps=$(echo $2 | tr "," "\n")
+for dep in $pydeps
 do
-  printf "\n $line"
-done < "$pinput"
+  echo "$dep"
+done
 
-printf "\nInstalling required packages .......\n"
-input="pymodules_list.txt"
-while IFS= read -r line
+echo "Installing python packages ......."
+input="/opt/pivotal/plpy-model/pymodules_list.txt"
+for dep in $pydeps
 do
-  printf "\nInstalling $line ............"
-  sudo pip3 install $line
-done < "$input"
+  echo "Installing $dep ............"
+  sudo -H pip3 install $dep
+done 
 
-printf "\nFinished with init_pyenv.sh script!.\n"
+echo "Installed all required python packages ......."
+
+echo "$1" > /opt/pivotal/plpy-model/MLPyModelService-input.log
+
+echo "Running spring boot application.................."	
+
+java -jar /opt/pivotal/plpy-model/MLPyModelService-1.0.0-SNAPSHOT.jar \
+	--spring.application.json="$1" > /opt/pivotal/plpy-model/MLPyModelService.log 2>&1 &
+	
+echo "Finished with init_container.sh script!."
+

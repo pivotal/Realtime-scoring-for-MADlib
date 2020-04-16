@@ -1,0 +1,86 @@
+#-----------------------------------------------------------------------------------------------
+#   Copyright 2019 Pivotal Software
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+#----------------------------------------------------------------------------------------------
+
+# Author: Sridhar Paladugu 
+# Email: spaladugu@pivotal.io
+# Description: plpython model deployment manifest
+# APP DEPLOYMENT
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: $APP_NAME-rts-for-madlib-plpymodel
+  name: $APP_NAME-rts-for-madlib-plpymodel
+spec:
+  replicas: $REPLICAS
+  selector:
+    matchLabels:
+      run: $APP_NAME-rts-for-madlib-plpymodel-exposed
+  template:
+    metadata:
+      labels:
+        run: $APP_NAME-rts-for-madlib-plpymodel-exposed
+    spec:
+      containers:
+        - name: $APP_NAME-rts-for-madlib-plpymodel
+          image: $RTSMADLIB_DOCKER_REG/rts4madlib-plpymodel:$RTSMADLIB_IMG_TAG
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: MADLIB_APP_JSON
+              valueFrom:
+                configMapKeyRef:
+                  name: $APP_NAME-rts-for-madlib-plpymodel-config
+                  key: springjson
+            - name: PY_MODULE_DEPS
+              valueFrom:
+                configMapKeyRef:
+                  name: $APP_NAME-rts-for-madlib-plpymodel-config
+                  key: pydeps
+                  
+          lifecycle:
+            postStart:
+              exec:
+                command: ["/bin/sh", "-c", "/docker-entrypoint-initdb.d/init_container.sh \"${MADLIB_APP_JSON}\" \"${PY_MODULE_DEPS}\""]
+          ports:
+            - containerPort: 8090
+              protocol: TCP
+            - containerPort: 5432
+              protocol: TCP
+      imagePullSecrets:
+        - name: regcred
+
+---
+
+# APP SERVICE
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: $APP_NAME-rts-for-madlib-plpymodel
+  name: $APP_NAME-rts-for-madlib-plpymodel
+spec:
+  type: LoadBalancer	
+  ports:
+  - name: http
+    protocol: TCP
+    port: 8090
+    targetPort: 8090
+  - name: psql
+    protocol: TCP
+    port: 5432
+    targetPort: 5432
+  selector:
+    run: $APP_NAME-rts-for-madlib-plpymodel-exposed

@@ -36,13 +36,13 @@ import subprocess
     ./buildbaseimages.sh --tag 1.3
 """
 def buildJava11(registry, tag):
-	print "Building UBUNTU image  with JDK11........."
+	print ("Building UBUNTU image  with JDK11.........")
 	buildImgCommad='docker build -t  rts4madlib-jdk:' + tag + ' ' + os.getcwd()+'/java'
 	subprocess.call(shlex.split(buildImgCommad))
 	if registry is None:
-		print "No Docker registry is specified. Skipping the push operation!"
+		print ("No Docker registry is specified. Skipping the push operation!")
 	else:
-		print "pushing the image to docker registry " + registry + " with tag: " + tag
+		print ("pushing the image to docker registry " + registry + " with tag: " + tag)
 		tagCommand='docker tag rts4madlib-jdk:' + tag + ' '+ registry + '/rts4madlib-jdk:' + tag
 		subprocess.call(shlex.split(tagCommand))
 		pushCommand='docker push '+ registry + '/rts4madlib-jdk:' + tag
@@ -51,13 +51,13 @@ def buildJava11(registry, tag):
 		subprocess.call(shlex.split(cleanCommand))
 
 def buildMadlibbase(registry, tag):
-	print "Building UBUNTU image with Postgres with MADlib and JDK11........."
+	print ("Building UBUNTU image with Postgres with MADlib and JDK11.........")
 	buildImgCommad='docker build -t rts4madlib-pgjava:' + tag + ' ' + os.getcwd()+'/MADlib'
 	subprocess.call(shlex.split(buildImgCommad))
 	if registry is None:
-		print "No Docker registry is specified. Skipping the push operation!"
+		print ("No Docker registry is specified. Skipping the push operation!")
 	else:
-		print "pushing the image to docker registry " + registry + " with tag: " + tag
+		print ("pushing the image to docker registry " + registry + " with tag: " + tag)
 		tagCommand='docker tag rts4madlib-pgjava:' + tag + ' ' + registry+'/rts4madlib-pgjava:' + tag
 		subprocess.call(shlex.split(tagCommand))
 		pushCommand='docker push '+ registry +'/rts4madlib-pgjava:' + tag
@@ -66,13 +66,13 @@ def buildMadlibbase(registry, tag):
 		subprocess.call(shlex.split(cleanCommand))
 		
 def buildPymlbase(registry, tag):
-	print "Building UBUNTU image with Postgres with plPython and JDK11........."
+	print ("Building UBUNTU image with Postgres with plPython and JDK11.........")
 	buildImgCommad='docker build -t rts4madlib-plpy:' + tag + ' ' + os.getcwd()+'/PLPython'
 	subprocess.call(shlex.split(buildImgCommad))
 	if registry is None:
-		print "No Docker registry is specified. Skipping the push operation!"
+		print ("No Docker registry is specified. Skipping the push operation!")
 	else:
-		print "pushing the image to docker registry " + registry + " with tag: " + tag
+		print ("pushing the image to docker registry " + registry + " with tag: " + tag)
 		tagCommand='docker tag rts4madlib-plpy:' + tag + ' ' + registry+'/rts4madlib-plpy:' + tag
 		subprocess.call(shlex.split(tagCommand))
 		pushCommand='docker push '+ registry +'/rts4madlib-plpy:' + tag
@@ -85,10 +85,10 @@ def main():
 	parser.add_argument("--registry", nargs="?", help="docker registry for pushing images")
 	parser.add_argument("--tag", nargs="?", help="docker image version")
 	arguments = parser.parse_args()
-	'buildJava11(arguments.registry, arguments.tag)'
-	'buildMadlibbase(arguments.registry, arguments.tag)'
+	buildJava11(arguments.registry, arguments.tag)'
+	buildMadlibbase(arguments.registry, arguments.tag)'
 	buildPymlbase(arguments.registry, arguments.tag)
-	print "Finished building base docker images!"
+	print ("Finished building base docker images!")
 
 if __name__ == "__main__":
 	main()
