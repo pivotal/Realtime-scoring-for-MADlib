@@ -118,7 +118,6 @@ Now we are ready to start deploying models.
 
 #### Installing micro batch with Cache updates:
 [ML Batch](https://github.com/pivotal/Realtime-scoring-for-MADlib/blob/master/RTS4MADlib/samples/Deploy_mlbatch.md)
-# License
 
 #### Installing Model, with Caching and Feature Engine:
 [Credit Fraud application - Jupiter notebook](https://github.com/pivotal/Realtime-scoring-for-MADlib/blob/master/RTS4MADlib/samples/jupyter_notebooks/CreditTransaction_Fraud_Model_demo_kube.ipynb)
