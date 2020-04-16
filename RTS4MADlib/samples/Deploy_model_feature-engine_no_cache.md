@@ -59,7 +59,9 @@ Please note above we have 3 services exposed and their ip addresses. Since this 
 
 Now to test the service
 
-```curl -v -H "Content-Type:application/json" -X POST http://192.168.99.100:31224/predict -d '{"a1":"a","a2":58.67,"a3":4.46,"a4":"u","a5":"g","a6":"q","a7":"h","a8":3.04,"a9":"t","a10":"t","a11":6,"a12":"f","a13":"g","a14":43,"a15":560,"a16":"+"}'
+```
+curl -v -H "Content-Type:application/json" -X POST http://192.168.99.100:31224/predict -d '{"a1":"a","a2":58.67,"a3":4.46,"a4":"u","a5":"g","a6":"q","a7":"h","a8":3.04,"a9":"t","a10":"t","a11":6,"a12":"f","a13":"g","a14":43,"a15":560,"a16":"+"}'
+
 ```
 We should get below result;
 
