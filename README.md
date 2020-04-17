@@ -122,5 +122,9 @@ Now we are ready to start deploying models.
 #### Installing Model, with Caching and Feature Engine:
 [Credit Fraud application - Jupiter notebook](https://github.com/pivotal/Realtime-scoring-for-MADlib/blob/master/RTS4MADlib/samples/jupyter_notebooks/CreditTransaction_Fraud_Model_demo_kube.ipynb)
 
+#### Installing plpytohn Model:
+[PL/Python model - Jupiter notebook](https://github.com/pivotal/Realtime-scoring-for-MADlib/blob/master/RTS4MADlib/samples/jupyter_notebooks/PLPython_Model-Liner_Regression_Demo.ipynb)
+
+
 # License
 http://www.apache.org/licenses/LICENSE-2.0
